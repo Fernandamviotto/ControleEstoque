@@ -17,7 +17,7 @@ typedef struct
     char nm_produto[50];
     char und_produto;
     char dt_validade[11];
-    int qtd_produto;
+    float qtd_produto;
     double vl_produto;
 } reg_produto;
 
@@ -61,47 +61,135 @@ typedef struct
     TipoApontador_mov Ultimo_mov;
 } TipoLista_mov;
 
-// Função de coordenadas para tela padrao
-void gotoxy(int x, int y)
+void cadastrarFinal(TipoLista *L)
 {
-    COORD coord;
-    coord.X = (short)x;
-    coord.Y = (short)y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+    TipoApontador P;
+    TipoApontador aux1;
+    int resp;
+    reg_produto reg_prod;
+    // gotoxy(30, 03);
+    printf("CADASTRAR PRODUTO NO FIM");
+    do
+    {
+        // gotoxy(30, 03);
+        printf("               ");
+        // gotoxy(30, 03);
+        scanf("%d", &reg_prod.cd_produto);
+        getchar();
+        aux1 = pesquisa(L, reg_prod.cd_produto);
+        if (aux1 != NULL)
+        {
+            // gotoxy(30, 03);
+            printf("               ");
+            // gotoxy(30, 03);
+            printf("Codigo ja Cadsatrado");
+            getch();
+            // gotoxy(30, 03);
+            printf("               ");
+        }
+    } while (aux1 != NULL);
+    // Le os dados do produto
+    // Leitura(&reg_prod);
+
+    // gotoxy(30, 03);
+    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
+    scanf("%d", &resp);
+    if (resp == 1)
+    {
+        P = (TipoApontador)malloc(sizeof(TipoItem));
+        // move os valores lidos para os ponteiros
+        P->conteudo = reg_prod;
+        if (L->Primeiro == NULL)
+        {
+            L->Primeiro = P;
+            L->Primeiro->proximo = NULL;
+            L->Ultimo = L->Primeiro;
+        }
+        else
+        {
+            L->Ultimo->proximo = P;
+            L->Ultimo = L->Ultimo->proximo;
+            L->Ultimo->proximo = NULL;
+        }
+    }
 }
 
-void tela()
+int MenuProduto(TipoLista *L)
 {
-    int t;
-    system("color 2E");
-    gotoxy(01, 01);
-    printf("+--------------------------------------------------------------------------------------------+");
-    gotoxy(01, 02);
-    printf("| UNICV");
-    gotoxy(75, 02);
-    printf("Estrutura de Dados |");
-    gotoxy(01, 03);
-    printf("|");
-    gotoxy(94, 03);
-    printf("|");
-    gotoxy(40, 02);
-    printf("SISTEMA DE CONTROLE DE ESTOQUE");
-    gotoxy(01, 04);
-    printf("+--------------------------------------------------------------------------------------------+");
-    for (t = 5; t < 24; t++)
-    {
-        gotoxy(01, t);
-        printf("|");
-        gotoxy(94, t);
-        printf("|");
-    }
 
-    gotoxy(01, 22);
-    printf("+--------------------------------------------------------------------------------------------+");
-    gotoxy(02, 23);
-    printf("MSG.:");
-    gotoxy(01, 24);
-    printf("+--------------------------------------------------------------------------------------------+");
+    int opc;
+    do
+    {
+        // gotoxy(30, 03);
+        printf("MENU PRODUTO");
+        // gotoxy(20, 7);
+        printf("1 - Cadastar Produto no Final da Lista");
+        // gotoxy(20, 8);
+        printf("2 - Cadastar Produto no Inicio da Lista");
+        // gotoxy(20, 9);
+        printf("3 - Cadastar Produto em uma posição da Lista");
+        // gotoxy(20, 10);
+        printf("4 - Remover Produto no Final da Lista");
+        // gotoxy(20, 11);
+        printf("5 - Remover Produto na Posicao da Lista");
+        // gotoxy(20, 12);
+        printf("6 - Remover Produto no Inicio da Lista");
+        // gotoxy(20, 13);
+        printf("7 - Consultar todos os Produtos");
+        // gotoxy(20, 14);
+        printf("8 - Alterar dados do Produto");
+        // gotoxy(20, 15);
+        printf("9 - Retornar ao Menu Principal");
+        // gotoxy(8, 23);
+        printf("Digite sua opcao..:");
+        scanf("%d", &opc);
+        switch (opc)
+        {
+        case 1:
+            // incluir menu a de cadastro
+            break;
+
+        case 7:
+            // incluir o menu de consulta
+            break;
+
+        default:
+            break;
+        }
+    } while (opc < 9);
+}
+
+void MenuConsultar(TipoLista *L)
+{
+
+    int opc;
+    do
+    {
+        // gotoxy(30, 03);
+        printf("CONSULTAR PRODUTO");
+        // gotoxy(20, 7);
+        printf("1 - Consultar Fichario do Produto Geral");
+        // gotoxy(20, 8);
+        printf("2 - Consultar em Ordem de Codigo");
+        // gotoxy(20, 9);
+        printf("3 - Consultar em Ordem Alfabetica");
+        // gotoxy(20, 10);
+        printf("4 - Consultar o Codigo Especifico");
+        // gotoxy(20, 11);
+        printf("5 - Retornar Menu Principal");
+        // gotoxy(8, 23);
+        printf("Digite sua opcao..:");
+        scanf("%d", &opc);
+        switch (opc)
+        {
+        case 1:
+            // incluir consultar todos
+            break;
+
+        default:
+            break;
+        }
+    } while (opc < 6);
 }
 
 int main()
@@ -115,53 +203,23 @@ int main()
     do
     {
         tela();
-        gotoxy(30, 03);
+        // gotoxy(30, 03);
         printf("MENU PRINCIPAL");
-        gotoxy(20, 7);
-        printf("1 - Cadastar Cliente no Final da Lista");
-        gotoxy(20, 8);
-        printf("2 - Cadastar Cliente no Inicio da Lista");
-        gotoxy(20, 9);
-        printf("3 - Cadastar Cliente em uma posição da Lista");
+        // gotoxy(20, 7);
+        printf("1 - Menu Cadastro de Produto");
+        // gotoxy(20, 8);
+        printf("2 - Menu Movimentacao de Estoque");
+        // gotoxy(20, 9);
+        printf("3 - Finalizar o Programa");
         printf("Digite sua opcao..:");
         scanf("%d", &opc);
 
         switch (opc)
         {
         case 1:
-            gotoxy(30, 03);
-            printf("MENU PRODUTO");
-            gotoxy(20, 7);
-            printf("1 - Cadastar Produto no Final da Lista");
-            gotoxy(20, 8);
-            printf("2 - Cadastar Produto no Inicio da Lista");
-            gotoxy(20, 9);
-            printf("3 - Cadastar Produto em uma posicao da Lista");
-            gotoxy(20, 10);
-            printf("4 - Remover Produto no Final da Lista");
-            gotoxy(20, 11);
-            printf("5 - Remover Produto no Inicio da Lista");
-            gotoxy(20, 12);
-            printf("6 - Remover Produto em uma posicao da Lista");
-            gotoxy(20, 13);
-            printf("7 - Consultar todos Produtos");
-            gotoxy(20, 14);
-            printf("8 - Alterar dados do Produtos");
-            gotoxy(20, 15);
-            printf("9 - Retornar ao Menu Principal");
-            printf("Digite sua opcao..:");
-            scanf("%d", &opc);
             break;
 
         case 2:
-            gotoxy(30, 03);
-            printf("MENU MOVIMENTACAO DE ESTOQUE");
-            gotoxy(20, 7);
-            printf("1 - Cadastar Movimentacao de Estoque");
-            gotoxy(20, 8);
-            printf("2 - Lista Movimentacao de Estoque");
-            gotoxy(20, 9);
-            printf("3 - Retornar ao Menu Principal");
             break;
 
         default:
