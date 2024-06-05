@@ -86,8 +86,10 @@ void tela()
     printf("|");
     gotoxy(94, 03);
     printf("|");
-    gotoxy(40, 02);
+    gotoxy(38, 02);
     printf("CONTROLE DE ESTOQUE");
+    gotoxy(78, 03);
+    printf("Fernanda Viotto |");
     gotoxy(01, 04);
     printf("+--------------------------------------------------------------------------------------------+");
     for (t = 5; t < 24; t++)
@@ -134,19 +136,34 @@ void TelaMov()
     printf("+---------------------+----------------------+----------------------+");
 }
 
+void telaProduto()
+{
+    tela();
+    gotoxy(12, 07);
+    printf("Codigo do Produto........:");
+    gotoxy(12, 8);
+    printf("1 - Descricao do Produto.:");
+    gotoxy(12, 9);
+    printf("2 - Unidade de Medida....:");
+    gotoxy(12, 10);
+    printf("3 - Data de Validade.....:");
+}
+
 void cadastrarFinal(TipoLista *L)
 {
     TipoApontador P;
     TipoApontador aux1;
     int resp;
     reg_produto reg_prod;
-    gotoxy(30, 03);
-    printf("CADASTRAR PRODUTO NO FIM");
+
     do
     {
+        tela();
         gotoxy(30, 03);
-        printf("               ");
-        gotoxy(30, 03);
+        printf("CADASTRAR PRODUTO NO FIM");
+        // chamar tela do meio
+        telaProduto();
+        gotoxy(12, 07); // arrumar o cursor
         scanf("%d", &reg_prod.cd_produto);
         getchar();
         // aux1 = pesquisa(L, reg_prod.cd_produto);
@@ -220,7 +237,7 @@ int MenuProduto(TipoLista *L)
         switch (opc)
         {
         case 1:
-            // incluir menu a de cadastro
+            cadastrarFinal(L);
             break;
 
         case 7:
