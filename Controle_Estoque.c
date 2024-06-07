@@ -149,6 +149,62 @@ void telaProduto()
     printf("3 - Data de Validade.....:");
 }
 
+// cadastrar produto no inicio da lista
+void cadastrarInicio(TipoLista *L)
+{
+    TipoApontador P;
+    TipoApontador aux1;
+    int resp;
+    reg_produto reg_prod;
+
+    do
+    {
+        tela();
+        gotoxy(30, 03);
+        printf("CADASTRAR PRODUTO NO INICIO");
+        // chamar tela do meio
+        telaProduto();
+        gotoxy(12, 07); // arrumar o cursor
+        scanf("%d", &reg_prod.cd_produto);
+        getchar();
+        // aux1 = pesquisa(L, reg_prod.cd_produto);
+        if (aux1 != NULL)
+        {
+            gotoxy(30, 03);
+            printf("               ");
+            gotoxy(30, 03);
+            printf("Codigo ja Cadsatrado");
+            getch();
+            gotoxy(30, 03);
+            printf("               ");
+        }
+    } while (aux1 != NULL);
+    // Le os dados do produto
+    // Leitura(&reg_prod); Incluir a tela de leitura
+
+    gotoxy(30, 03);
+    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
+    scanf("%d", &resp);
+    if (resp == 1)
+    {
+        P = (TipoApontador)malloc(sizeof(TipoItem));
+        // move os valores lidos para os ponteiros
+        P->conteudo = reg_prod;
+        if (L->Primeiro == NULL)
+        {
+            L->Primeiro = P;
+            L->Primeiro->proximo = NULL;
+            L->Ultimo = L->Primeiro;
+        }
+        else
+        {
+            P->proximo = L->Primeiro;
+            L->Primeiro = P;
+        }
+    }
+}
+
+// cadastrar produtono final da lista
 void cadastrarFinal(TipoLista *L)
 {
     TipoApontador P;
@@ -179,7 +235,7 @@ void cadastrarFinal(TipoLista *L)
         }
     } while (aux1 != NULL);
     // Le os dados do produto
-    // Leitura(&reg_prod);
+    // Leitura(&reg_prod); Incluir a tela de leitura
 
     gotoxy(30, 03);
     printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
@@ -200,6 +256,78 @@ void cadastrarFinal(TipoLista *L)
             L->Ultimo->proximo = P;
             L->Ultimo = L->Ultimo->proximo;
             L->Ultimo->proximo = NULL;
+        }
+    }
+}
+
+// cadastrar produto em uma posicao da lista
+void cadastrarPosicao(TipoLista *L)
+{
+    TipoApontador P;
+    TipoApontador aux1;
+    int resp;
+    reg_produto reg_prod;
+    int posicao;
+
+    do
+    {
+        tela();
+        gotoxy(30, 03);
+        printf("CADASTRAR PRODUTO EM UMA POSICAO");
+        // chamar tela do meio
+        telaProduto();
+        gotoxy(12, 07); // arrumar o cursor
+        scanf("%d", &reg_prod.cd_produto);
+        getchar();
+        // aux1 = pesquisa(L, reg_prod.cd_produto);
+        if (aux1 != NULL)
+        {
+            gotoxy(30, 03);
+            printf("               ");
+            gotoxy(30, 03);
+            printf("Codigo ja Cadsatrado");
+            getch();
+            gotoxy(30, 03);
+            printf("               ");
+        }
+    } while (aux1 != NULL);
+    // Le os dados do produto
+    // Leitura(&reg_prod); Incluir a tela de leitura
+
+    gotoxy(30, 03);
+    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
+    scanf("%d", &resp);
+    if (resp == 1)
+    {
+        P = (TipoApontador)malloc(sizeof(TipoItem));
+        // move os valores lidos para os ponteiros
+        P->conteudo = reg_prod;
+        if (L->Primeiro == NULL)
+        {
+            L->Primeiro = P;
+            L->Primeiro->proximo = NULL;
+            L->Ultimo = L->Primeiro;
+        }
+        else
+        {
+            gotoxy(30, 03);
+            printf("Informe a posicao..:");
+            scanf("%d", &posicao);
+            if (posicao == 1)
+            {
+                P->proximo = L->Primeiro;
+                L->Primeiro = P;
+            }
+            else
+            {
+                aux1 = L->Primeiro;
+                for (int i = 1; i < posicao - 1; i++)
+                {
+                    aux1 = aux1->proximo;
+                }
+                P->proximo = aux1->proximo;
+                aux1->proximo = P;
+            }
         }
     }
 }
@@ -238,6 +366,14 @@ int MenuProduto(TipoLista *L)
         {
         case 1:
             cadastrarFinal(L);
+            break;
+
+        case 2:
+            cadastrarInicio(L);
+            break;
+
+        case 3:
+            cadastrarPosicao(L);
             break;
 
         case 7:
