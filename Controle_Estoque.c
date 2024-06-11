@@ -69,13 +69,69 @@ void gotoxy(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+void home()
+{
+    int h;
+    system("cls");
+    system("color 0B");
+    gotoxy(01, 01);
+    printf("+--------------------------------------------------------------------------------------------------+");
+    gotoxy(01, 03);
+    printf("|");
+    gotoxy(100, 03);
+    printf("|");
+    gotoxy(38, 04);
+    printf("CONTROLE  DE  ESTOQUE  LOJA");
+    gotoxy(41, 24);
+    printf("FRUTAS  &  VERDURAS");
+    gotoxy(44, 27);
+    printf("BOX  07  MGA-PR");
+
+    gotoxy(02, 8);
+    printf("                                FFFFFFFFFFF                  LLLLL");
+    gotoxy(02, 9);
+    printf("                                FFFFFFFFFFF                  LLLLL");
+    gotoxy(02, 10);
+    printf("                                FFFF                         LLLLL");
+    gotoxy(02, 11);
+    printf("                                FFFF                         LLLLL");
+    gotoxy(02, 12);
+    printf("                                FFFF                         LLLLL");
+    gotoxy(02, 13);
+    printf("                                FFFFFFFF       &&&&&&&&      LLLLL");
+    gotoxy(02, 14);
+    printf("                                FFFFFFFF       &&&&&&&&      LLLLL");
+    gotoxy(02, 15);
+    printf("                                FFFF           &&&           LLLLL");
+    gotoxy(02, 16);
+    printf("                                FFFF           &&&&&         LLLLL");
+    gotoxy(02, 17);
+    printf("                                FFFF           &&&&&         LLLLL");
+    gotoxy(02, 18);
+    printf("                                FFFF           &&&           LLLLL");
+    gotoxy(02, 19);
+    printf("                                FFFF           &&&&&&&&      LLLLLLLLLLLLLLLL");
+    gotoxy(02, 20);
+    printf("                                FFFF           &&&&&&&&      LLLLLLLLLLLLLLLL");
+
+    for (h = 2; h < 30; h++)
+    {
+        gotoxy(01, h);
+        printf("|");
+        gotoxy(100, h);
+        printf("|");
+    }
+    gotoxy(01, 30);
+    printf("+--------------------------------------------------------------------------------------------------+");
+}
+
 // Mostra a Tela Padrao
 void tela()
 {
 
     int t;
     system("cls");
-    system("color 2E");
+    system("color 0C");
     gotoxy(01, 01);
     printf("+--------------------------------------------------------------------------------------------+");
     gotoxy(01, 02);
@@ -152,9 +208,9 @@ void telaProduto()
 // Funções MENU PRODUTO
 // alterar
 
-void alterarProduto(TipoLista *L)
+/*void alterarProduto(TipoLista *L)
 {
-}
+}*/
 
 //  cadastrar produto no inicio da lista
 void cadastrarInicio(TipoLista *L)
@@ -212,12 +268,12 @@ void cadastrarInicio(TipoLista *L)
 }
 
 // função pesquisar
-TipoApontador pesquisa(TipoLista *L, int codigo)
+/*TipoApontador pesquisa(TipoLista *L, int codigo)
 {
     TipoApontador aux;
     aux = L->Primeiro;
     // while(aux)
-}
+}*/
 
 // cadastrar produtono final da lista
 void cadastrarFinal(TipoLista *L)
@@ -237,7 +293,7 @@ void cadastrarFinal(TipoLista *L)
         gotoxy(37, 06); // arrumar o cursor
         scanf("%d", &reg_prod.cd_produto);
         getchar();
-        aux1 = pesquisa(L, reg_prod.cd_produto);
+        // aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
             gotoxy(37, 06);
@@ -445,7 +501,7 @@ void consultarEspecifico(TipoLista *L)
 // calculo de custo medio do valor unitario de cada produto
 
 // cadastrar movimentacao de estoque
-void cadastrarMov(TipoLista_mov *M)
+/*void cadastrarMov(TipoLista_mov *M)
 {
     TipoApontador P;
     TipoApontador aux1;
@@ -462,10 +518,10 @@ void cadastrarMov(TipoLista_mov *M)
     } while ()
     {
     }
-}
+}*/
 
 // Lista Movimentacao de Estoque
-void listaMov(TipoLista_mov *M)
+/*void listaMov(TipoLista_mov *M)
 {
     TipoApontador_mov aux1;
     aux1 = M->Primeiro_mov;
@@ -481,7 +537,7 @@ void listaMov(TipoLista_mov *M)
         printf("Custo Medio...........:%.2f\n", aux1->conteudo_mov.vl_total_mov / aux1->conteudo_mov.qt_mov);
         aux1 = aux1->proximo_mov;
     }
-}
+}*/
 
 int MenuProduto(TipoLista *L)
 {
@@ -603,6 +659,8 @@ void MovEstoque(TipoApontador_mov *M)
 int main()
 {
 
+    home();
+    getch();
     int opc;
     TipoLista L;
     TipoLista_mov M;
