@@ -150,6 +150,12 @@ void telaProduto()
 }
 
 // Funções MENU PRODUTO
+// alterar
+
+void alterarProduto(TipoLista *L)
+{
+}
+
 //  cadastrar produto no inicio da lista
 void cadastrarInicio(TipoLista *L)
 {
@@ -205,6 +211,14 @@ void cadastrarInicio(TipoLista *L)
     }
 }
 
+// função pesquisar
+TipoApontador pesquisa(TipoLista *L, int codigo)
+{
+    TipoApontador aux;
+    aux = L->Primeiro;
+    // while(aux)
+}
+
 // cadastrar produtono final da lista
 void cadastrarFinal(TipoLista *L)
 {
@@ -220,15 +234,15 @@ void cadastrarFinal(TipoLista *L)
         printf("CADASTRAR PRODUTO NO FIM");
         // chamar tela do meio
         telaProduto();
-        gotoxy(12, 07); // arrumar o cursor
+        gotoxy(37, 06); // arrumar o cursor
         scanf("%d", &reg_prod.cd_produto);
         getchar();
-        // aux1 = pesquisa(L, reg_prod.cd_produto);
+        aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
-            gotoxy(30, 03);
+            gotoxy(37, 06);
             printf("               ");
-            gotoxy(30, 03);
+            gotoxy(37, 06);
             printf("Codigo ja Cadsatrado");
             getch();
             gotoxy(30, 03);
@@ -429,91 +443,24 @@ void consultarEspecifico(TipoLista *L)
 
 // Menu Movimentacao de Estoque
 // calculo de custo medio do valor unitario de cada produto
-void custoMedio(TipoLista *L, TipoLista_mov *M)
-{
-    TipoApontador aux1;
-    TipoApontador_mov aux2;
-    float qt_mov;
-    float vl_unit_mov;
-    float vl_total_mov;
-    float qt_total;
-    float vl_total;
-    float custo_medio;
-
-    aux1 = L->Primeiro;
-    while (aux1 != NULL)
-    {
-        aux2 = M->Primeiro_mov;
-        qt_total = 0;
-        vl_total = 0;
-        while (aux2 != NULL)
-        {
-            if (aux1->conteudo.cd_produto == aux2->conteudo_mov.cd_prod_mov)
-            {
-                qt_mov = aux2->conteudo_mov.qt_mov;
-                vl_unit_mov = aux2->conteudo_mov.vl_unit_mov;
-                vl_total_mov = aux2->conteudo_mov.vl_total_mov;
-                qt_total = qt_total + qt_mov;
-                vl_total = vl_total + vl_total_mov;
-            }
-            aux2 = aux2->proximo_mov;
-        }
-        custo_medio = vl_total / qt_total;
-        printf("Codigo do Produto..:%d\n", aux1->conteudo.cd_produto);
-        printf("Nome do Produto....:%s\n", aux1->conteudo.nm_produto);
-        printf("Custo Medio........:%.2f\n", custo_medio);
-        aux1 = aux1->proximo;
-    }
-}
 
 // cadastrar movimentacao de estoque
 void cadastrarMov(TipoLista_mov *M)
 {
-    TipoApontador_mov P;
-    TipoApontador_mov aux1;
-    int resp;
+    TipoApontador P;
+    TipoApontador aux1;
+    reg_produto reg_prod;
     reg_movimentacao reg_mov;
+    TipoApontador_mov M;
+    int resp;
 
     do
     {
-        TelaMov();
-        gotoxy(12, 6); // arrumar o cursor
-        scanf("%d", &reg_mov.cd_prod_mov);
-        getchar();
-        // aux1 = pesquisa(L, reg_prod.cd_produto);
-        if (aux1 != NULL)
-        {
-            gotoxy(30, 03);
-            printf("               ");
-            gotoxy(30, 03);
-            printf("Codigo ja Cadsatrado");
-            getch();
-            gotoxy(30, 03);
-            printf("               ");
-        }
-    } while (aux1 != NULL);
-    // Le os dados do produto
-    // Leitura(&reg_prod); Incluir a tela de leitura
-
-    gotoxy(30, 03);
-    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
-    scanf("%d", &resp);
-    if (resp == 1)
+        tela();
+        gotoxy(30, 03);
+        printf("CADASTRAR MOVIMENTACAO");
+    } while ()
     {
-        P = (TipoApontador_mov)malloc(sizeof(TipoItem_mov));
-        // move os valores lidos para os ponteiros
-        P->conteudo_mov = reg_mov;
-        if (M->Primeiro_mov == NULL)
-        {
-            M->Primeiro_mov = P;
-            M->Primeiro_mov->proximo_mov = NULL;
-            M->Ultimo_mov = M->Primeiro_mov;
-        }
-        else
-        {
-            P->proximo_mov = M->Primeiro_mov;
-            M->Primeiro_mov = P;
-        }
     }
 }
 
