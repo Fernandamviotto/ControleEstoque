@@ -69,62 +69,6 @@ void gotoxy(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void home()
-{
-    int h;
-    system("cls");
-    system("color 0B");
-    gotoxy(01, 01);
-    printf("+--------------------------------------------------------------------------------------------------+");
-    gotoxy(01, 03);
-    printf("|");
-    gotoxy(100, 03);
-    printf("|");
-    gotoxy(38, 04);
-    printf("CONTROLE  DE  ESTOQUE  LOJA");
-    gotoxy(41, 24);
-    printf("FRUTAS  &  VERDURAS");
-    gotoxy(44, 27);
-    printf("BOX  07  MGA-PR");
-
-    gotoxy(02, 8);
-    printf("                                FFFFFFFFFFF                  LLLLL");
-    gotoxy(02, 9);
-    printf("                                FFFFFFFFFFF                  LLLLL");
-    gotoxy(02, 10);
-    printf("                                FFFF                         LLLLL");
-    gotoxy(02, 11);
-    printf("                                FFFF                         LLLLL");
-    gotoxy(02, 12);
-    printf("                                FFFF                         LLLLL");
-    gotoxy(02, 13);
-    printf("                                FFFFFFFF       &&&&&&&&      LLLLL");
-    gotoxy(02, 14);
-    printf("                                FFFFFFFF       &&&&&&&&      LLLLL");
-    gotoxy(02, 15);
-    printf("                                FFFF           &&&           LLLLL");
-    gotoxy(02, 16);
-    printf("                                FFFF           &&&&&         LLLLL");
-    gotoxy(02, 17);
-    printf("                                FFFF           &&&&&         LLLLL");
-    gotoxy(02, 18);
-    printf("                                FFFF           &&&           LLLLL");
-    gotoxy(02, 19);
-    printf("                                FFFF           &&&&&&&&      LLLLLLLLLLLLLLLL");
-    gotoxy(02, 20);
-    printf("                                FFFF           &&&&&&&&      LLLLLLLLLLLLLLLL");
-
-    for (h = 2; h < 30; h++)
-    {
-        gotoxy(01, h);
-        printf("|");
-        gotoxy(100, h);
-        printf("|");
-    }
-    gotoxy(01, 30);
-    printf("+--------------------------------------------------------------------------------------------------+");
-}
-
 // Mostra a Tela Padrao
 void tela()
 {
