@@ -18,7 +18,8 @@ typedef struct
     char und_produto;
     char dt_validade[11];
     float qtd_produto;
-    double vl_produto;
+    float vl_CustoMedio;
+    float vl_total;
 } reg_produto;
 
 typedef struct TipoItem *TipoApontador;
@@ -347,6 +348,58 @@ void cadastrarPosicao(TipoLista *L)
     }
 }
 
+// função remover
+
+// função consultar em lista
+void consultarTodos(TipoLista *L)
+{
+    TipoApontador p;
+    reg_produto reg_prod;
+    int lin;
+    tela();
+    gotoxy(30, 03);
+    printf("CONSULTA DE PRODUTOS");
+    lin = 7;
+    gotoxy(02, 05);
+    printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
+    gotoxy(02, 06);
+    printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+    p = L->Primeiro;
+    if (p == NULL)
+    {
+        gotoxy(07, 23);
+        printf("LISTA DE PRODUTOS VAZIA");
+        getch();
+    }
+    else
+    {
+        while (p != NULL)
+        {
+            gotoxy(02, lin);
+            printf("%d", reg_prod.cd_produto);
+            gotoxy(05, lin);
+            printf("%s", reg_prod.nm_produto);
+            gotoxy(36, lin);
+            printf("%s", reg_prod.und_produto);
+            gotoxy(40, lin);
+            printf("%s", reg_prod.dt_validade);
+            gotoxy(53, lin);
+            printf("%6.2f", reg_prod.qtd_produto);
+            gotoxy(63, lin);
+            printf("%6.2f", reg_prod.vl_CustoMedio);
+            gotoxy(73, lin);
+            printf("%6.2f", reg_prod.vl_total);
+            p = p->proximo;
+            lin++;
+            if (lin > 20)
+            {
+                lin = 7;
+                gotoxy(25, 23);
+            }
+        }
+    }
+}
+
 // funções menu consultar
 // consultar ficharia do produto geral
 void consultarGeral(TipoLista *L)
@@ -360,8 +413,6 @@ void consultarGeral(TipoLista *L)
         printf("Unidade............:%c\n", aux1->conteudo.und_produto);
         printf("Data de Validade...:%s\n", aux1->conteudo.dt_validade);
         printf("Quantidade.........:%.2f\n", aux1->conteudo.qtd_produto);
-        printf("Valor..............:%.2f\n", aux1->conteudo.vl_produto);
-        printf("Valor Total........:%.2f\n", aux1->conteudo.qtd_produto * aux1->conteudo.vl_produto);
         aux1 = aux1->proximo;
     }
 }
@@ -434,8 +485,6 @@ void consultarEspecifico(TipoLista *L)
             printf("Unidade............:%c\n", aux1->conteudo.und_produto);
             printf("Data de Validade...:%s\n", aux1->conteudo.dt_validade);
             printf("Quantidade.........:%.2f\n", aux1->conteudo.qtd_produto);
-            printf("Valor..............:%.2f\n", aux1->conteudo.vl_produto);
-            printf("Valor Total........:%.2f\n", aux1->conteudo.qtd_produto * aux1->conteudo.vl_produto);
         }
         aux1 = aux1->proximo;
     }
