@@ -172,6 +172,54 @@ TipoApontador pesquisa(TipoLista *L, int codigo)
     return aux;
 }
 
+// Le o nome do produto
+char *le_nm_produto(e)
+{
+    char *nm_produto;
+    nm_produto = malloc(sizeof(char) * 11);
+    do
+    {
+        gotoxy(37, 12);
+        printf("                         ");
+        gotoxy(37, 12);
+        fgets(nm_produto, 11, stdin);
+
+        if ((srtlen(nm_produto) == 1) && (strcmp(nm_produto, "0") == -1))
+        {
+            gotoxy(07, 23);
+            printf("Unidade de Medida e Obrigatoria");
+            getch();
+            gotoxy(07, 23);
+            printf("                                                  ");
+        }
+    } while ((strlen(nm_produto) == 1) && (strcmp(nm_produto, "0") == -1));
+    return nm_produto;
+}
+
+// Le a Unidade de Medida do Produto
+char *le_und_produto(e)
+{
+    char *und_produto;
+    und_produto = malloc(sizeof(char) * 3);
+    do
+    {
+        gotoxy(37, 10);
+        printf("                         ");
+        gotoxy(37, 10);
+        fgets(und_produto, 4, stdin);
+
+        if ((srtlen(und_produto) == 1) && (strcmp(und_produto, "0") == -1))
+        {
+            gotoxy(07, 23);
+            printf("Unidade de Medida e Obrigatoria");
+            getch();
+            gotoxy(07, 23);
+            printf("                                                  ");
+        }
+    } while ((strlen(und_produto) == 1) && (strcmp(und_produto, "0") == -1));
+    return und_produto;
+}
+
 // Le a Data de Validade
 char *le_dt_validade(e)
 {
@@ -184,15 +232,15 @@ char *le_dt_validade(e)
         gotoxy(37, 12);
         fgets(dt_validade, 11, stdin);
 
-        if ((srtlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == -1))
+        if ((srtlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == 0))
         {
             gotoxy(07, 23);
-            printf("Unidade de Medida e Obrigatoria");
+            printf("Data de Validade e Obrigatoria");
             getch();
             gotoxy(07, 23);
             printf("                                                  ");
         }
-    } while ((strlen(dt_validade) == 1) && (strcmp(dt_validade) == -1));
+    } while ((strlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == 0));
     return dt_validade;
 }
 
