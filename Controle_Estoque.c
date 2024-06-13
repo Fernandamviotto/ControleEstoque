@@ -154,7 +154,6 @@ void telaProduto()
 // alterar Produto
 void alterarProduto(TipoLista *L)
 {
-    
 }
 
 // Função para pesquisar se o elemento tem na leitura
@@ -171,6 +170,30 @@ TipoApontador pesquisa(TipoLista *L, int codigo)
         aux = aux->proximo;
     }
     return aux;
+}
+
+// Le a Data de Validade
+char *le_dt_validade(e)
+{
+    char *dt_validade;
+    dt_validade = malloc(sizeof(char) * 11);
+    do
+    {
+        gotoxy(37, 12);
+        printf("                         ");
+        gotoxy(37, 12);
+        fgets(dt_validade, 11, stdin);
+
+        if ((srtlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == -1))
+        {
+            gotoxy(07, 23);
+            printf("Unidade de Medida e Obrigatoria");
+            getch();
+            gotoxy(07, 23);
+            printf("                                                  ");
+        }
+    } while ((strlen(dt_validade) == 1) && (strcmp(dt_validade) == -1));
+    return dt_validade;
 }
 
 // Função Leitura de Produto
@@ -442,7 +465,7 @@ void consultarGeral(TipoLista *L)
     {
         printf("Codigo do Produto..:%d\n", aux1->conteudo.cd_produto);
         printf("Nome do Produto....:%s\n", aux1->conteudo.nm_produto);
-        printf("Unidade............:%c\n", aux1->conteudo.und_produto);
+        printf("Unidade............:%s\n", aux1->conteudo.und_produto);
         printf("Data de Validade...:%s\n", aux1->conteudo.dt_validade);
         printf("Quantidade.........:%.2f\n", aux1->conteudo.qtd_produto);
         aux1 = aux1->proximo;
@@ -703,6 +726,7 @@ void MenuConsultar(TipoLista *L)
     } while (opc < 6);
 }
 
+// MENU PRINCIPAL
 int main()
 {
 
@@ -743,7 +767,7 @@ int main()
             break;
 
         case 2:
-            MovEstoque(&M);
+            MovEstoque(&L);
             break;
 
         default:
