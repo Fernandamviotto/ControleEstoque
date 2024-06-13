@@ -15,7 +15,7 @@ typedef struct
 {
     int cd_produto;
     char nm_produto[50];
-    char und_produto;
+    char und_produto[03];
     char dt_validade[11];
     float qtd_produto;
     float vl_CustoMedio;
@@ -151,11 +151,35 @@ void telaProduto()
 }
 
 // Funções MENU PRODUTO
-// alterar
-
-/*void alterarProduto(TipoLista *L)
+// alterar Produto
+void alterarProduto(TipoLista *L)
 {
-}*/
+    
+}
+
+// Função para pesquisar se o elemento tem na leitura
+TipoApontador pesquisa(TipoLista *L, int codigo)
+{
+    TipoApontador aux;
+    aux = L->Primeiro;
+    while (aux != NULL)
+    {
+        if (aux->conteudo.cd_produto == codigo)
+        {
+            break;
+        }
+        aux = aux->proximo;
+    }
+    return aux;
+}
+
+// Função Leitura de Produto
+void leitura(reg_produto *reg_prod)
+{
+    strcpy(reg_prod->nm_produto, le_nm_produto());
+    strcpy(reg_prod->und_produto, le_und_produto());
+    strcpy(reg_prod->dt_validade, le_dt_validade());
+}
 
 //  cadastrar produto no inicio da lista
 void cadastrarInicio(TipoLista *L)
@@ -175,7 +199,7 @@ void cadastrarInicio(TipoLista *L)
         gotoxy(12, 07); // arrumar o cursor
         scanf("%d", &reg_prod.cd_produto);
         getchar();
-        // aux1 = pesquisa(L, reg_prod.cd_produto);
+        aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
             gotoxy(30, 03);
@@ -188,7 +212,7 @@ void cadastrarInicio(TipoLista *L)
         }
     } while (aux1 != NULL);
     // Le os dados do produto
-    // Leitura(&reg_prod); Incluir a tela de leitura
+    Leitura(&reg_prod); // Incluir a tela de leitura
 
     gotoxy(30, 03);
     printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
@@ -395,8 +419,16 @@ void consultarTodos(TipoLista *L)
             {
                 lin = 7;
                 gotoxy(25, 23);
+                printf("CONSULTA DE PRODUTOS");
+                gotoxy(02, 05);
+                printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
+                gotoxy(02, 06);
+                printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
             }
         }
+        gotoxy(07, 23);
+        printf("Pressione uma tecla para continuar...");
+        getch();
     }
 }
 
@@ -482,7 +514,7 @@ void consultarEspecifico(TipoLista *L)
         {
             printf("Codigo do Produto..:%d\n", aux1->conteudo.cd_produto);
             printf("Nome do Produto....:%s\n", aux1->conteudo.nm_produto);
-            printf("Unidade............:%c\n", aux1->conteudo.und_produto);
+            printf("Unidade............:%s\n", aux1->conteudo.und_produto);
             printf("Data de Validade...:%s\n", aux1->conteudo.dt_validade);
             printf("Quantidade.........:%.2f\n", aux1->conteudo.qtd_produto);
         }
@@ -494,44 +526,63 @@ void consultarEspecifico(TipoLista *L)
 // calculo de custo medio do valor unitario de cada produto
 
 // cadastrar movimentacao de estoque
-/*void cadastrarMov(TipoLista_mov *M)
+/*void cadastrarMov(TipoLista *L)
 {
     TipoApontador P;
     TipoApontador aux1;
-    reg_produto reg_prod;
     reg_movimentacao reg_mov;
-    TipoApontador_mov M;
     int resp;
+
+    TelaMov();
+    gotoxy(30,03);
+    printf("CADASTRAR MOVIMENTAVAO");
 
     do
     {
-        tela();
-        gotoxy(30, 03);
-        printf("CADASTRAR MOVIMENTACAO");
-    } while ()
+        gotoxy(37, 06);
+        printf("             ");
+        gotoxy(37, 06);
+        printf("%d", &reg_mov.cd_prod_mov);
+        getchar();
+        aux1 = pesquisa(L, reg_mov.cd_prod_mov);
+        if(aux1 == NULL)
+
+    }
     {
     }
 }*/
 
 // Lista Movimentacao de Estoque
-/*void listaMov(TipoLista_mov *M)
+void ConsultaMov(TipoLista *L)
 {
-    TipoApontador_mov aux1;
-    aux1 = M->Primeiro_mov;
-    while (aux1 != NULL)
-    {
-        printf("Data da Movimentacao..:%s\n", aux1->conteudo_mov.dt_mov);
-        printf("Tipo de Movimentacao..:%c\n", aux1->conteudo_mov.tp_mov);
-        printf("Quantidade............:%.2f\n", aux1->conteudo_mov.qt_mov);
-        printf("Valor unitario........:%.2f\n", aux1->conteudo_mov.vl_unit_mov);
-        printf("Valor Total...........:%.2f\n", aux1->conteudo_mov.vl_total_mov);
-        printf("Quantidade em estoque.:%.2f\n", aux1->conteudo_mov.qt_mov);
-        printf("Valor em estoque......:%.2f\n", aux1->conteudo_mov.vl_total_mov);
-        printf("Custo Medio...........:%.2f\n", aux1->conteudo_mov.vl_total_mov / aux1->conteudo_mov.qt_mov);
-        aux1 = aux1->proximo_mov;
-    }
-}*/
+    int resp;
+    int aux1;
+    reg_movimentacao reg_mov;
 
+    do
+    {
+        tela();
+        gotoxy(30, 03);
+        printf("CONSULTAR MOVIMENTACAO");
+        gotoxy(01, 05);
+        printf("| Produto.: XX - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX               |");
+        gotoxy(01, 06);
+        printf("+--------------------------------------------------------------------------------------------+");
+        gotoxy(01, 07);
+        printf("|  Data         Tip     Quant     Vl.Unit    Vl. Total     Qtd Est   Custo Med     Vl.Total");
+        gotoxy(02, 8);
+        printf("|----------  ------- ---------- ----------- ------------ ---------- -----------  ----------- |");
+        scanf("%d", &reg_mov.cd_prod_mov);
+        aux1 = 0;
+    } while (aux1 != 0);
+
+    gotoxy(07, 23);
+    printf("Deseja gravar os dados (1 - SIM; 2 - NÃO)..: ");
+    scanf("%d", &resp);
+}
+
+// MENUS
+// Menu Produto
 int MenuProduto(TipoLista *L)
 {
 
@@ -577,7 +628,7 @@ int MenuProduto(TipoLista *L)
             break;
 
         case 7:
-            // incluir o menu de consulta
+            MenuConsultar(L);
             break;
 
         default:
@@ -586,6 +637,38 @@ int MenuProduto(TipoLista *L)
     } while (opc < 9);
 }
 
+// Menu Movimentacao Estoque
+void MovEstoque(TipoApontador *L)
+{
+    int opc;
+    do
+    {
+        tela();
+        gotoxy(30, 03);
+        printf("MENU MOVIMENTACAO DE ESTOQUE");
+        gotoxy(20, 7);
+        printf("1 - Cadastra Movimentavao de Estoque");
+        gotoxy(20, 8);
+        printf("2 - Lista Movimentacao de Estoque");
+        gotoxy(20, 11);
+        printf("3 - Retornar Menu Principal");
+        gotoxy(8, 23);
+        printf("Digite sua opcao..:");
+        scanf("%d", &opc);
+        switch (opc)
+        {
+        case 1:
+            // incluir consultar todos
+            break;
+
+        default:
+            break;
+        }
+    } while (opc < 6);
+}
+
+// SUBMENU
+// Menu Consultar Produto
 void MenuConsultar(TipoLista *L)
 {
 
@@ -620,50 +703,21 @@ void MenuConsultar(TipoLista *L)
     } while (opc < 6);
 }
 
-void MovEstoque(TipoApontador_mov *M)
-{
-    int opc;
-    do
-    {
-        tela();
-        gotoxy(30, 03);
-        printf("MENU MOVIMENTACAO DE ESTOQUE");
-        gotoxy(20, 7);
-        printf("1 - Cadastra Movimentavao de Estoque");
-        gotoxy(20, 8);
-        printf("2 - Lista Movimentacao de Estoque");
-        gotoxy(20, 11);
-        printf("3 - Retornar Menu Principal");
-        gotoxy(8, 23);
-        printf("Digite sua opcao..:");
-        scanf("%d", &opc);
-        switch (opc)
-        {
-        case 1:
-            // incluir consultar todos
-            break;
-
-        default:
-            break;
-        }
-    } while (opc < 6);
-}
-
 int main()
 {
 
-    home();
-    getch();
+    // home();
+    // getch();
     int opc;
-    TipoLista L;
-    TipoLista_mov M;
     // para iniciar a cabeça deve estar fazia
     // LISTA DE PRODUTO
+    TipoLista L;
     L.Primeiro = NULL;
     L.Ultimo = NULL;
     // LISTA DE MOVIMENTACAO
+    /*TipoLista_mov M;
     M.Primeiro_mov = NULL;
-    M.Ultimo_mov = NULL;
+    M.Ultimo_mov = NULL;*/
 
     setlocale(LC_ALL, "portuguese-brazilian");
     // fica dentro de um Do While para o usuario escolher dentre as opções
@@ -689,7 +743,7 @@ int main()
             break;
 
         case 2:
-            MenuConsultar(&L);
+            MovEstoque(&M);
             break;
 
         default:
