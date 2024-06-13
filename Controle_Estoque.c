@@ -9,6 +9,7 @@ Objetivo..: Desenvolver um controle de estoque usando lista
 #include <windows.h>
 #include <conio.h>
 #include <locale.h>
+#include <string.h>
 
 // Dados produto
 typedef struct
@@ -151,43 +152,23 @@ void telaProduto()
 }
 
 // Funções MENU PRODUTO
-// alterar Produto
-void alterarProduto(TipoLista *L)
-{
-}
-
-// Função para pesquisar se o elemento tem na leitura
-TipoApontador pesquisa(TipoLista *L, int codigo)
-{
-    TipoApontador aux;
-    aux = L->Primeiro;
-    while (aux != NULL)
-    {
-        if (aux->conteudo.cd_produto == codigo)
-        {
-            break;
-        }
-        aux = aux->proximo;
-    }
-    return aux;
-}
 
 // Le o nome do produto
-char *le_nm_produto(e)
+char *le_nm_produto()
 {
     char *nm_produto;
-    nm_produto = malloc(sizeof(char) * 11);
+    nm_produto = malloc(sizeof(char) * 50);
     do
     {
-        gotoxy(37, 12);
+        gotoxy(37, 8);
         printf("                         ");
-        gotoxy(37, 12);
-        fgets(nm_produto, 11, stdin);
+        gotoxy(37, 8);
+        fgets(nm_produto, 50, stdin);
 
         if ((srtlen(nm_produto) == 1) && (strcmp(nm_produto, "0") == -1))
         {
             gotoxy(07, 23);
-            printf("Unidade de Medida e Obrigatoria");
+            printf("Nome do Produto e Obrigatorio");
             getch();
             gotoxy(07, 23);
             printf("                                                  ");
@@ -197,7 +178,7 @@ char *le_nm_produto(e)
 }
 
 // Le a Unidade de Medida do Produto
-char *le_und_produto(e)
+char *le_und_produto()
 {
     char *und_produto;
     und_produto = malloc(sizeof(char) * 3);
@@ -221,7 +202,7 @@ char *le_und_produto(e)
 }
 
 // Le a Data de Validade
-char *le_dt_validade(e)
+char *le_dt_validade()
 {
     char *dt_validade;
     dt_validade = malloc(sizeof(char) * 11);
@@ -240,8 +221,24 @@ char *le_dt_validade(e)
             gotoxy(07, 23);
             printf("                                                  ");
         }
-    } while ((strlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == 0));
+    } while ((strlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == -1));
     return dt_validade;
+}
+
+// Função para pesquisar se o elemento tem na leitura
+TipoApontador pesquisa(TipoLista *L, int codigo)
+{
+    TipoApontador aux;
+    aux = L->Primeiro;
+    while (aux != NULL)
+    {
+        if (aux->conteudo.cd_produto == codigo)
+        {
+            break;
+        }
+        aux = aux->proximo;
+    }
+    return aux;
 }
 
 // Função Leitura de Produto
@@ -283,7 +280,11 @@ void cadastrarInicio(TipoLista *L)
         }
     } while (aux1 != NULL);
     // Le os dados do produto
-    Leitura(&reg_prod); // Incluir a tela de leitura
+    leitura(&reg_prod); // Incluir a tela de leitura
+
+    reg_prod.qtd_produto = 0;
+    reg_prod.vl_CustoMedio = 0;
+    reg_prod.vl_total = 0;
 
     gotoxy(30, 03);
     printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
@@ -307,14 +308,6 @@ void cadastrarInicio(TipoLista *L)
     }
 }
 
-// função pesquisar
-/*TipoApontador pesquisa(TipoLista *L, int codigo)
-{
-    TipoApontador aux;
-    aux = L->Primeiro;
-    // while(aux)
-}*/
-
 // cadastrar produtono final da lista
 void cadastrarFinal(TipoLista *L)
 {
@@ -333,7 +326,7 @@ void cadastrarFinal(TipoLista *L)
         gotoxy(37, 06); // arrumar o cursor
         scanf("%d", &reg_prod.cd_produto);
         getchar();
-        // aux1 = pesquisa(L, reg_prod.cd_produto);
+        aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
             gotoxy(37, 06);
@@ -346,7 +339,11 @@ void cadastrarFinal(TipoLista *L)
         }
     } while (aux1 != NULL);
     // Le os dados do produto
-    // Leitura(&reg_prod); Incluir a tela de leitura
+    leitura(&reg_prod); // Incluir a tela de leitura
+
+    reg_prod.qtd_produto = 0;
+    reg_prod.vl_CustoMedio = 0;
+    reg_prod.vl_total = 0;
 
     gotoxy(30, 03);
     printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
@@ -390,7 +387,7 @@ void cadastrarPosicao(TipoLista *L)
         gotoxy(12, 07); // arrumar o cursor
         scanf("%d", &reg_prod.cd_produto);
         getchar();
-        // aux1 = pesquisa(L, reg_prod.cd_produto);
+        aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
             gotoxy(30, 03);
@@ -403,7 +400,11 @@ void cadastrarPosicao(TipoLista *L)
         }
     } while (aux1 != NULL);
     // Le os dados do produto
-    // Leitura(&reg_prod); Incluir a tela de leitura
+    leitura(&reg_prod); // Incluir a tela de leitura
+
+    reg_prod.qtd_produto = 0;
+    reg_prod.vl_CustoMedio = 0;
+    reg_prod.vl_total = 0;
 
     gotoxy(30, 03);
     printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
@@ -439,6 +440,69 @@ void cadastrarPosicao(TipoLista *L)
                 P->proximo = aux1->proximo;
                 aux1->proximo = P;
             }
+        }
+    }
+}
+
+// alterar Produto
+void alterarProduto(TipoLista *L)
+{
+    TipoApontador P;
+    TipoApontador aux1;
+    reg_produto reg_prod;
+    int resp;
+
+    do
+    {
+        telaProduto();
+        gotoxy(33, 03);
+        printf("ALTERAR PRODUTO");
+        gotoxy(37, 06);
+        scanf("%d", &reg_prod.cd_produto);
+        getchar();
+        aux1 = pesquisa(L, reg_prod.cd_produto);
+        if (aux1 == NULL)
+        {
+            gotoxy(30, 03);
+            printf("               ");
+            gotoxy(30, 03);
+            printf("Codigo nao Cadsatrado");
+            getch();
+            gotoxy(30, 03);
+            printf("               ");
+        }
+    } while (aux1 != NULL);
+    gotoxy(37, 8);
+    printf("%s", aux1->conteudo.nm_produto);
+    gotoxy(37, 10);
+    printf("%s", aux1->conteudo.und_produto);
+    gotoxy(37, 12);
+    printf("%s", aux1->conteudo.dt_validade);
+    gotoxy(14, 21);
+    printf("%.2f", aux1->conteudo.qtd_produto);
+    gotoxy(30, 21);
+    printf("%.2f", aux1->conteudo.vl_CustoMedio);
+    gotoxy(45, 21);
+    printf("%.2f", aux1->conteudo.vl_total);
+
+    gotoxy(30, 03);
+    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
+    scanf("%d", &resp);
+    if (resp == 1)
+    {
+        P = (TipoApontador)malloc(sizeof(TipoItem));
+        // move os valores lidos para os ponteiros
+        P->conteudo = reg_prod;
+        if (L->Primeiro == NULL)
+        {
+            L->Primeiro = P;
+            L->Primeiro->proximo = NULL;
+            L->Ultimo = L->Primeiro;
+        }
+        else
+        {
+            P->proximo = L->Primeiro;
+            L->Primeiro = P;
         }
     }
 }
@@ -624,7 +688,7 @@ void consultarEspecifico(TipoLista *L)
 }*/
 
 // Lista Movimentacao de Estoque
-void ConsultaMov(TipoLista *L)
+void ConsultaMov(TipoLista_mov *M)
 {
     int resp;
     int aux1;
@@ -654,7 +718,7 @@ void ConsultaMov(TipoLista *L)
 
 // MENUS
 // Menu Produto
-int MenuProduto(TipoLista *L)
+void MenuProduto(TipoLista *L)
 {
 
     int opc;
@@ -699,7 +763,11 @@ int MenuProduto(TipoLista *L)
             break;
 
         case 7:
-            MenuConsultar(L);
+            // menu consultar
+            break;
+
+        case 8:
+            alterarProduto(L);
             break;
 
         default:
@@ -709,7 +777,7 @@ int MenuProduto(TipoLista *L)
 }
 
 // Menu Movimentacao Estoque
-void MovEstoque(TipoApontador *L)
+void MovEstoque(TipoLista_mov *M)
 {
     int opc;
     do
@@ -729,13 +797,17 @@ void MovEstoque(TipoApontador *L)
         switch (opc)
         {
         case 1:
-            // incluir consultar todos
+            // cadastro movi
+            break;
+
+        case 2:
+            ConsultaMov(M);
             break;
 
         default:
             break;
         }
-    } while (opc < 6);
+    } while (opc < 4);
 }
 
 // SUBMENU
@@ -768,6 +840,19 @@ void MenuConsultar(TipoLista *L)
             // incluir consultar todos
             break;
 
+        case 2:
+            consultarCodigo(L);
+            break;
+        case 3:
+            // incluir consultar todos
+            break;
+        case 4:
+            // incluir consultar todos
+            break;
+        case 5:
+            // incluir consultar todos
+            break;
+
         default:
             break;
         }
@@ -781,15 +866,16 @@ int main()
     // home();
     // getch();
     int opc;
-    // para iniciar a cabeça deve estar fazia
-    // LISTA DE PRODUTO
     TipoLista L;
+    TipoLista_mov M;
+    // para iniciar a cabeça deve estar fazia
+
+    // LISTA DE PRODUTO
     L.Primeiro = NULL;
     L.Ultimo = NULL;
     // LISTA DE MOVIMENTACAO
-    /*TipoLista_mov M;
     M.Primeiro_mov = NULL;
-    M.Ultimo_mov = NULL;*/
+    M.Ultimo_mov = NULL;
 
     setlocale(LC_ALL, "portuguese-brazilian");
     // fica dentro de um Do While para o usuario escolher dentre as opções
@@ -815,7 +901,7 @@ int main()
             break;
 
         case 2:
-            MovEstoque(&L);
+            MovEstoque(&M);
             break;
 
         default:
