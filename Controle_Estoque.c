@@ -82,6 +82,8 @@ void tela()
     printf("+--------------------------------------------------------------------------------------------------+");
     gotoxy(01, 02);
     printf("| UNICV");
+    gotoxy(01, 03);
+    printf("| F&L Frutas e Verduras");
     gotoxy(81, 02);
     printf("Estrutura de Dados |");
     gotoxy(01, 03);
@@ -142,13 +144,13 @@ void telaProduto()
 {
     tela();
     gotoxy(12, 07);
-    printf("Codigo do Produto........:");
+    printf("Codigo do Produto........: ");
     gotoxy(12, 9);
-    printf("1 - Descricao do Produto.:");
+    printf("1 - Descricao do Produto.: ");
     gotoxy(12, 11);
-    printf("2 - Unidade de Medida....:");
+    printf("2 - Unidade de Medida....: ");
     gotoxy(12, 13);
-    printf("3 - Data de Validade.....:");
+    printf("3 - Data de Validade.....: ");
     gotoxy(12, 15);
     printf("+-------------------------------------------------------------------+");
     gotoxy(12, 16);
@@ -167,6 +169,15 @@ void telaProduto()
     printf("+---------------------+----------------------+----------------------+");
 }
 
+void telaconsulta()
+{
+    tela();
+    gotoxy(02, 05);
+    printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
+    gotoxy(02, 06);
+    printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+}
+
 // Funções MENU PRODUTO
 
 // Le o nome do produto
@@ -178,18 +189,18 @@ char *le_nm_produto()
     nm_produto = malloc(sizeof(char) * 50);
     do
     {
-        gotoxy(37, 8);
+        gotoxy(40, 9);
         printf("                         ");
-        gotoxy(37, 8);
+        gotoxy(40, 9);
         fgets(nm_produto, 50, stdin);
 
         // O srtlen verifica o tamanho do campo, servido para validar o valor digitado
         if ((strlen(nm_produto) == 1) && (strcmp(nm_produto, "0") == -1))
         {
-            gotoxy(07, 23);
+            gotoxy(8, 29);
             printf("Nome do Produto e Obrigatorio");
             getch();
-            gotoxy(07, 23);
+            gotoxy(7, 29);
             printf("                                                  ");
         }
     } while ((strlen(nm_produto) == 1) && (strcmp(nm_produto, "0") == -1));
@@ -204,17 +215,17 @@ char *le_und_produto()
     und_produto = malloc(sizeof(char) * 3);
     do
     {
-        gotoxy(37, 10);
+        gotoxy(40, 11);
         printf("                         ");
-        gotoxy(37, 10);
+        gotoxy(40, 11);
         fgets(und_produto, 4, stdin);
 
         if ((strlen(und_produto) == 1) && (strcmp(und_produto, "0") == -1))
         {
-            gotoxy(07, 23);
+            gotoxy(8, 29);
             printf("Unidade de Medida e Obrigatoria");
             getch();
-            gotoxy(07, 23);
+            gotoxy(8, 29);
             printf("                                                  ");
         }
     } while ((strlen(und_produto) == 1) && (strcmp(und_produto, "0") == -1));
@@ -229,17 +240,17 @@ char *le_dt_validade()
     dt_validade = malloc(sizeof(char) * 11);
     do
     {
-        gotoxy(37, 12);
+        gotoxy(40, 13);
         printf("                         ");
-        gotoxy(37, 12);
+        gotoxy(40, 13);
         fgets(dt_validade, 11, stdin);
 
         if ((strlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == 0))
         {
-            gotoxy(07, 23);
+            gotoxy(8, 29);
             printf("Data de Validade e Obrigatoria");
             getch();
-            gotoxy(07, 23);
+            gotoxy(8, 29);
             printf("                                                  ");
         }
     } while ((strlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == -1));
@@ -301,12 +312,12 @@ void cadastrarInicio(TipoLista *L)
         aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
-            gotoxy(30, 03);
+            gotoxy(8, 29);
             printf("               ");
-            gotoxy(30, 03);
+            gotoxy(8, 29);
             printf("Codigo ja Cadsatrado");
             getch();
-            gotoxy(30, 03);
+            gotoxy(8, 29);
             printf("               ");
         }
     } while (aux1 != NULL);
@@ -317,8 +328,8 @@ void cadastrarInicio(TipoLista *L)
     reg_prod.vl_CustoMedio = 0;
     reg_prod.vl_total = 0;
 
-    gotoxy(30, 03);
-    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
+    gotoxy(8, 29);
+    printf("Deseja gravar os dados (1-SIM; 2-NAO)..:");
     scanf("%d", &resp);
     if (resp == 1)
     {
@@ -360,12 +371,12 @@ void cadastrarFinal(TipoLista *L)
         aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
-            gotoxy(37, 06);
+            gotoxy(8, 29);
             printf("               ");
-            gotoxy(37, 06);
+            gotoxy(8, 29);
             printf("Codigo ja Cadsatrado");
             getch();
-            gotoxy(30, 03);
+            gotoxy(8, 29);
             printf("               ");
         }
     } while (aux1 != NULL);
@@ -376,8 +387,8 @@ void cadastrarFinal(TipoLista *L)
     reg_prod.vl_CustoMedio = 0;
     reg_prod.vl_total = 0;
 
-    gotoxy(07, 29);
-    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
+    gotoxy(8, 29);
+    printf("Deseja gravar os dados (1-SIM; 2-NAO)..:");
     scanf("%d", &resp);
     if (resp == 1)
     {
@@ -415,18 +426,18 @@ void cadastrarPosicao(TipoLista *L)
         printf("CADASTRAR PRODUTO EM UMA POSICAO");
         // chamar tela do meio
         telaProduto();
-        gotoxy(12, 07); // arrumar o cursor
+        gotoxy(40, 07); // arrumar o cursor
         scanf("%d", &reg_prod.cd_produto);
         getchar();
         aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 != NULL)
         {
-            gotoxy(30, 03);
+            gotoxy(8, 29);
             printf("               ");
-            gotoxy(30, 03);
+            gotoxy(8, 29);
             printf("Codigo ja Cadsatrado");
             getch();
-            gotoxy(30, 03);
+            gotoxy(8, 29);
             printf("               ");
         }
     } while (aux1 != NULL);
@@ -437,8 +448,10 @@ void cadastrarPosicao(TipoLista *L)
     reg_prod.vl_CustoMedio = 0;
     reg_prod.vl_total = 0;
 
-    gotoxy(30, 03);
-    printf("Deseja gravar os dados (1-Sim; 2-NAO)..:");
+    gotoxy(8, 29);
+    printf("                                                                 ");
+    gotoxy(8, 29);
+    printf("Deseja gravar os dados (1-SIM; 2-NAO)..:");
     scanf("%d", &resp);
     if (resp == 1)
     {
@@ -453,7 +466,9 @@ void cadastrarPosicao(TipoLista *L)
         }
         else
         {
-            gotoxy(30, 03);
+            gotoxy(8, 29);
+            printf("                                       ");
+            gotoxy(8, 29);
             printf("Informe a posicao..:");
             scanf("%d", &posicao);
             if (posicao == 1)
@@ -475,6 +490,199 @@ void cadastrarPosicao(TipoLista *L)
     }
 }
 
+// remover produto no inicio da lista
+void removerInicio(TipoLista *L)
+{
+    TipoApontador P;
+    reg_produto reg_prod;
+    int resp;
+
+    tela();
+    gotoxy(40, 03);
+    printf("CADASTRAR PRODUTO EM UMA POSICAO");
+    telaProduto();
+
+    if (L->Primeiro == NULL)
+    {
+        gotoxy(8, 29);
+        printf("               ");
+        gotoxy(8, 29);
+        printf("Lista Vazia");
+        getch();
+        gotoxy(8, 29);
+        printf("               ");
+    }
+    else
+    {
+
+        P = L->Primeiro;
+        L->Primeiro = L->Primeiro->proximo;
+        // mostrar o produto que deseja remover
+        reg_prod = P->conteudo;
+        gotoxy(37, 8);
+        printf("%s", reg_prod.nm_produto);
+        gotoxy(37, 10);
+        printf("%s", reg_prod.und_produto);
+        gotoxy(37, 12);
+        printf("%s", reg_prod.dt_validade);
+        gotoxy(20, 21);
+        printf("%.2f", reg_prod.qtd_produto);
+        gotoxy(50, 21);
+        printf("%.2f", reg_prod.vl_CustoMedio);
+        gotoxy(60, 21);
+        printf("%.2f", reg_prod.vl_total);
+        free(P);
+    }
+
+    // perguntar se deseja remover
+    gotoxy(8, 29);
+    printf("Confirma a exclusao do Produto (1-SIM; 2-NAO)..:");
+    scanf("%d", &resp);
+}
+
+// remover produto no final da lista
+void removerFinal(TipoLista *L)
+{
+    TipoApontador P;
+    TipoApontador aux1;
+    reg_produto reg_prod;
+    int resp;
+
+    tela();
+    gotoxy(40, 03);
+    printf("REMOVER PRODUTO NO FINAL");
+    telaProduto();
+
+    if (L->Primeiro == NULL)
+    {
+        gotoxy(8, 29);
+        printf("               ");
+        gotoxy(8, 29);
+        printf("Lista Vazia");
+        getch();
+        gotoxy(8, 29);
+        printf("               ");
+    }
+    else
+    {
+
+        P = L->Primeiro;
+        if (L->Primeiro == L->Ultimo)
+        {
+            L->Primeiro = NULL;
+            L->Ultimo = NULL;
+        }
+        else
+        {
+            aux1 = L->Primeiro;
+            while (aux1->proximo != L->Ultimo)
+            {
+                aux1 = aux1->proximo;
+            }
+            L->Ultimo = aux1;
+            L->Ultimo->proximo = NULL;
+        }
+        // mostrar o produto que deseja remover
+        reg_prod = P->conteudo;
+        gotoxy(37, 8);
+        printf("%s", reg_prod.nm_produto);
+        gotoxy(37, 10);
+        printf("%s", reg_prod.und_produto);
+        gotoxy(37, 12);
+        printf("%s", reg_prod.dt_validade);
+        gotoxy(20, 21);
+        printf("%.2f", reg_prod.qtd_produto);
+        gotoxy(50, 21);
+        printf("%.2f", reg_prod.vl_CustoMedio);
+        gotoxy(60, 21);
+        printf("%.2f", reg_prod.vl_total);
+        free(P);
+    }
+
+    // perguntar se deseja remover
+    gotoxy(8, 29);
+    printf("Confirma a exclusao do Produto (1-SIM; 2-NAO)..:");
+    scanf("%d", &resp);
+}
+
+// remover produto em uma posicao da lista
+void removerPosicao(TipoLista *L)
+{
+    TipoApontador P;
+    TipoApontador aux1;
+    reg_produto reg_prod;
+    int resp;
+    int posicao;
+
+    tela();
+    gotoxy(40, 03);
+    printf("REMOVER PRODUTO EM UMA POSICAO");
+    telaProduto();
+
+    if (L->Primeiro == NULL)
+    {
+        gotoxy(8, 29);
+        printf("               ");
+        gotoxy(8, 29);
+        printf("Lista Vazia");
+        getch();
+        gotoxy(8, 29);
+        printf("               ");
+    }
+    else
+    {
+        P = L->Primeiro;
+        if (L->Primeiro == L->Ultimo)
+        {
+            L->Primeiro = NULL;
+            L->Ultimo = NULL;
+        }
+        else
+        {
+            gotoxy(8, 29);
+            printf("                                       ");
+            gotoxy(8, 29);
+            printf("Informe a posicao..:");
+            scanf("%d", &posicao);
+            if (posicao == 1)
+            {
+                L->Primeiro = L->Primeiro->proximo;
+                free(P);
+            }
+            else
+            {
+                aux1 = L->Primeiro;
+                for (int i = 1; i < posicao - 1; i++)
+                {
+                    aux1 = aux1->proximo;
+                }
+                P = aux1->proximo;
+                aux1->proximo = P->proximo;
+                // mostrar o produto que deseja remover
+                reg_prod = P->conteudo;
+                gotoxy(37, 8);
+                printf("%s", reg_prod.nm_produto);
+                gotoxy(37, 10);
+                printf("%s", reg_prod.und_produto);
+                gotoxy(37, 12);
+                printf("%s", reg_prod.dt_validade);
+                gotoxy(20, 21);
+                printf("%.2f", reg_prod.qtd_produto);
+                gotoxy(50, 21);
+                printf("%.2f", reg_prod.vl_CustoMedio);
+                gotoxy(60, 21);
+                printf("%.2f", reg_prod.vl_total);
+                free(P);
+            }
+        }
+    }
+
+    // perguntar se deseja remover
+    gotoxy(8, 29);
+    printf("Confirma a exclusao do Produto (1-SIM; 2-NAO)..:");
+    scanf("%d", &resp);
+}
+
 // alterar Produto
 void alterarProduto(TipoLista *L)
 {
@@ -486,9 +694,9 @@ void alterarProduto(TipoLista *L)
     do
     {
         telaProduto();
-        gotoxy(33, 03);
+        gotoxy(40, 03);
         printf("ALTERAR PRODUTO");
-        gotoxy(37, 06);
+        gotoxy(40, 07);
         scanf("%d", &reg_prod.cd_produto);
         getchar();
         aux1 = pesquisa(L, reg_prod.cd_produto);
@@ -506,17 +714,17 @@ void alterarProduto(TipoLista *L)
     } while (aux1 == NULL);
 
     reg_prod = aux1->conteudo;
-    gotoxy(37, 8);
+    gotoxy(40, 9);
     printf("%s", aux1->conteudo.nm_produto);
-    gotoxy(37, 10);
+    gotoxy(40, 11);
     printf("%s", aux1->conteudo.und_produto);
-    gotoxy(37, 12);
+    gotoxy(40, 13);
     printf("%s", aux1->conteudo.dt_validade);
-    gotoxy(14, 21);
+    gotoxy(23, 21);
     printf("%.2f", aux1->conteudo.qtd_produto);
-    gotoxy(30, 21);
+    gotoxy(44, 21);
     printf("%.2f", aux1->conteudo.vl_CustoMedio);
-    gotoxy(45, 21);
+    gotoxy(66, 21);
     printf("%.2f", aux1->conteudo.vl_total);
 
     do
@@ -548,7 +756,7 @@ void alterarProduto(TipoLista *L)
         default:
         {
             gotoxy(07, 29);
-            printf("                                            ");
+            printf("                                                       ");
             gotoxy(07, 29);
             printf("Opcao Invalida. Tente uma opcao que seja valida");
             getch();
@@ -567,98 +775,6 @@ void alterarProduto(TipoLista *L)
     }
 }
 
-// funções remover
-// remover produto no inicio da lista
-void removerInicio(TipoLista *L)
-{
-    TipoApontador P;
-    int resp;
-    if (L->Primeiro == NULL)
-    {
-        gotoxy(30, 03);
-        printf("LISTA DE PRODUTOS VAZIA");
-        getch();
-    }
-    else
-    {
-        P = L->Primeiro;
-        L->Primeiro = L->Primeiro->proximo;
-        free(P);
-    }
-}
-
-// remover produto no final da lista
-void removerFinal(TipoLista *L)
-{
-    TipoApontador P;
-    TipoApontador aux1;
-    int resp;
-    if (L->Primeiro == NULL)
-    {
-        gotoxy(30, 03);
-        printf("LISTA DE PRODUTOS VAZIA");
-        getch();
-    }
-    else
-    {
-        P = L->Primeiro;
-        if (P->proximo == NULL)
-        {
-            L->Primeiro = NULL;
-            free(P);
-        }
-        else
-        {
-            while (P->proximo != NULL)
-            {
-                aux1 = P;
-                P = P->proximo;
-            }
-            aux1->proximo = NULL;
-            L->Ultimo = aux1;
-            free(P);
-        }
-    }
-}
-
-// remover produto em uma posicao da lista
-void removerPosicao(TipoLista *L)
-{
-    TipoApontador P;
-    TipoApontador aux1;
-    int resp;
-    int posicao;
-    if (L->Primeiro == NULL)
-    {
-        gotoxy(30, 03);
-        printf("LISTA DE PRODUTOS VAZIA");
-        getch();
-    }
-    else
-    {
-        gotoxy(30, 03);
-        printf("Informe a posicao..:");
-        scanf("%d", &posicao);
-        if (posicao == 1)
-        {
-            P = L->Primeiro;
-            L->Primeiro = L->Primeiro->proximo;
-            free(P);
-        }
-        else
-        {
-            P = L->Primeiro;
-            for (int i = 1; i < posicao; i++)
-            {
-                aux1 = P;
-                P = P->proximo;
-            }
-            aux1->proximo = P->proximo;
-            free(P);
-        }
-    }
-}
-
 // função consultar em lista
 void consultarTodos(TipoLista *L)
 {
@@ -666,17 +782,14 @@ void consultarTodos(TipoLista *L)
     reg_produto reg_prod;
     int lin;
     tela();
-    gotoxy(30, 03);
+    gotoxy(40, 03);
     printf("CONSULTA DE PRODUTOS");
-    lin = 7;
-    gotoxy(02, 05);
-    printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
-    gotoxy(02, 06);
-    printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+    telaconsulta();
+    lin = 5;
     p = L->Primeiro;
     if (p == NULL)
     {
-        gotoxy(07, 23);
+        gotoxy(8, 29);
         printf("LISTA DE PRODUTOS VAZIA");
         getch();
     }
@@ -684,9 +797,11 @@ void consultarTodos(TipoLista *L)
     {
         while (p != NULL)
         {
+            lin = lin + 2;
+            reg_prod = p->conteudo;
             gotoxy(02, lin);
             printf("%d", reg_prod.cd_produto);
-            gotoxy(05, lin);
+            gotoxy(06, lin);
             printf("%s", reg_prod.nm_produto);
             gotoxy(36, lin);
             printf("%s", reg_prod.und_produto);
@@ -700,9 +815,9 @@ void consultarTodos(TipoLista *L)
             printf("%6.2f", reg_prod.vl_total);
             p = p->proximo;
             lin++;
-            if (lin > 20)
+            if (lin > 27)
             {
-                lin = 7;
+                lin = 5;
                 gotoxy(25, 23);
                 printf("CONSULTA DE PRODUTOS");
                 gotoxy(02, 05);
@@ -711,21 +826,30 @@ void consultarTodos(TipoLista *L)
                 printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
             }
         }
-        gotoxy(07, 23);
+        gotoxy(8, 29);
         printf("Pressione uma tecla para continuar...");
         getch();
     }
 }
 
 // funções menu consultar
-// consultar ficharia do produto geral usando a funcao void telaProduto()
+// consultar todos os produtos um por tela
 
 // consultar em Ordem de Codigo
-void consultarOrdemCodigo(TipoLista *L)
+int comparaCodigo(const void *a, const void *b)
+{
+    reg_produto *produtoA = (reg_produto *)a;
+    reg_produto *produtoB = (reg_produto *)b;
+    return produtoA->cd_produto - produtoB->cd_produto;
+}
+
+void consultarCodigo(TipoLista *L)
 {
     TipoApontador p;
-    reg_produto reg_prod;
+    reg_produto *vetor;
     int lin;
+    int i;
+    int n;
     tela();
     gotoxy(30, 03);
     printf("CONSULTA DE PRODUTOS");
@@ -743,23 +867,38 @@ void consultarOrdemCodigo(TipoLista *L)
     }
     else
     {
+        n = 0;
         while (p != NULL)
         {
-            gotoxy(02, lin);
-            printf("%d", reg_prod.cd_produto);
-            gotoxy(05, lin);
-            printf("%s", reg_prod.nm_produto);
-            gotoxy(36, lin);
-            printf("%s", reg_prod.und_produto);
-            gotoxy(40, lin);
-            printf("%s", reg_prod.dt_validade);
-            gotoxy(53, lin);
-            printf("%6.2f", reg_prod.qtd_produto);
-            gotoxy(63, lin);
-            printf("%6.2f", reg_prod.vl_CustoMedio);
-            gotoxy(73, lin);
-            printf("%6.2f", reg_prod.vl_total);
+            n++;
             p = p->proximo;
+        }
+        vetor = (reg_produto *)malloc(n * sizeof(reg_produto));
+        p = L->Primeiro;
+        i = 0;
+        while (p != NULL)
+        {
+            vetor[i] = p->conteudo;
+            p = p->proximo;
+            i++;
+        }
+        qsort(vetor, n, sizeof(reg_produto), comparaCodigo);
+        for (i = 0; i < n; i++)
+        {
+            gotoxy(02, lin);
+            printf("%d", vetor[i].cd_produto);
+            gotoxy(05, lin);
+            printf("%s", vetor[i].nm_produto);
+            gotoxy(36, lin);
+            printf("%s", vetor[i].und_produto);
+            gotoxy(40, lin);
+            printf("%s", vetor[i].dt_validade);
+            gotoxy(53, lin);
+            printf("%6.2f", vetor[i].qtd_produto);
+            gotoxy(63, lin);
+            printf("%6.2f", vetor[i].vl_CustoMedio);
+            gotoxy(73, lin);
+            printf("%6.2f", vetor[i].vl_total);
             lin++;
             if (lin > 20)
             {
@@ -772,19 +911,28 @@ void consultarOrdemCodigo(TipoLista *L)
                 printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
             }
         }
-        gotoxy(07, 29);
+        free(vetor);
+        gotoxy(8, 29);
         printf("Pressione uma tecla para continuar...");
         getch();
     }
 }
 
-// consultar em Ordem Alfabetica
-// utilizando a função de ordenação
-void consultarAlfabetica(TipoLista *L)
+// consultar em Ordem Alfabetica por Nome do Produto
+int comparaNome(const void *a, const void *b)
+{
+    reg_produto *produtoA = (reg_produto *)a;
+    reg_produto *produtoB = (reg_produto *)b;
+    return strcmp(produtoA->nm_produto, produtoB->nm_produto);
+}
+
+void consultarOrdemNome(TipoLista *L)
 {
     TipoApontador p;
-    reg_produto reg_prod;
+    reg_produto *vetor;
     int lin;
+    int i;
+    int n;
     tela();
     gotoxy(30, 03);
     printf("CONSULTA DE PRODUTOS");
@@ -802,23 +950,38 @@ void consultarAlfabetica(TipoLista *L)
     }
     else
     {
+        n = 0;
         while (p != NULL)
         {
-            gotoxy(02, lin);
-            printf("%d", reg_prod.cd_produto);
-            gotoxy(05, lin);
-            printf("%s", reg_prod.nm_produto);
-            gotoxy(36, lin);
-            printf("%s", reg_prod.und_produto);
-            gotoxy(40, lin);
-            printf("%s", reg_prod.dt_validade);
-            gotoxy(53, lin);
-            printf("%6.2f", reg_prod.qtd_produto);
-            gotoxy(63, lin);
-            printf("%6.2f", reg_prod.vl_CustoMedio);
-            gotoxy(73, lin);
-            printf("%6.2f", reg_prod.vl_total);
+            n++;
             p = p->proximo;
+        }
+        vetor = (reg_produto *)malloc(n * sizeof(reg_produto));
+        p = L->Primeiro;
+        i = 0;
+        while (p != NULL)
+        {
+            vetor[i] = p->conteudo;
+            p = p->proximo;
+            i++;
+        }
+        qsort(vetor, n, sizeof(reg_produto), comparaNome);
+        for (i = 0; i < n; i++)
+        {
+            gotoxy(02, lin);
+            printf("%d", vetor[i].cd_produto);
+            gotoxy(05, lin);
+            printf("%s", vetor[i].nm_produto);
+            gotoxy(36, lin);
+            printf("%s", vetor[i].und_produto);
+            gotoxy(40, lin);
+            printf("%s", vetor[i].dt_validade);
+            gotoxy(53, lin);
+            printf("%6.2f", vetor[i].qtd_produto);
+            gotoxy(63, lin);
+            printf("%6.2f", vetor[i].vl_CustoMedio);
+            gotoxy(73, lin);
+            printf("%6.2f", vetor[i].vl_total);
             lin++;
             if (lin > 20)
             {
@@ -831,7 +994,8 @@ void consultarAlfabetica(TipoLista *L)
                 printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
             }
         }
-        gotoxy(07, 23);
+        free(vetor);
+        gotoxy(8, 29);
         printf("Pressione uma tecla para continuar...");
         getch();
     }
@@ -843,29 +1007,46 @@ void consultarAlfabetica(TipoLista *L)
 // calculo de custo medio do valor unitario de cada produto
 
 // cadastrar movimentacao de estoque
-/*void cadastrarMov(TipoLista *L)
+/*void cadastrarMov(TipoLista *L, TipoLista_mov *M)
 {
     TipoApontador P;
-    TipoApontador aux1;
+    TipoApontador_mov aux1;
+    reg_produto reg_prod;
     reg_movimentacao reg_mov;
     int resp;
 
-    TelaMov();
-    gotoxy(30,03);
-    printf("CADASTRAR MOVIMENTAVAO");
-
     do
     {
+        tela();
+        TelaMov();
+        gotoxy(40, 03);
+        printf("CADASTRAR MOVIMENTAVAO");
+        gotoxy(40, 07);
+        printf("                    ");
         gotoxy(37, 06);
-        printf("             ");
-        gotoxy(37, 06);
-        printf("%d", &reg_mov.cd_prod_mov);
+        scanf("%d", &reg_prod.cd_produto);
+        gotoxy(40, 06);
+        printf("-");
+        gotoxy(42, 06);
+        scanf("%d", &reg_prod.nm_produto);
         getchar();
-        aux1 = pesquisa(L, reg_mov.cd_prod_mov);
-        if(aux1 == NULL)
+        aux1 = pesquisa(L, reg_prod.cd_produto);
+        if (aux1 == NULL)
+        {
+            gotoxy(8, 29);
+            printf("               ");
+            gotoxy(8, 29);
+            printf("Produto nao Cadsatrado");
+            getch();
+            gotoxy(8, 29);
+            printf("               ");
+        }
+    } while (aux1 == NULL);
 
-    }
-   }*/
+    reg_mov.cd_prod_mov = reg_prod.cd_produto;
+
+    gotoxy(40, 09);
+}*/
 
 // Lista Movimentacao de Estoque
 void ConsultaMov(TipoLista *L)
@@ -877,7 +1058,7 @@ void ConsultaMov(TipoLista *L)
     do
     {
         tela();
-        gotoxy(30, 03);
+        gotoxy(40, 03);
         printf("CONSULTAR MOVIMENTACAO");
         gotoxy(01, 05);
         printf("| Produto.: XX - XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX               |");
@@ -905,32 +1086,32 @@ void menu_consultar(TipoLista *L)
     do
     {
         tela();
-        gotoxy(30, 03);
+        gotoxy(40, 03);
         printf("CONSULTAR PRODUTO");
-        gotoxy(20, 7);
-        printf("1 - Consultar Fichario do Produto Geral");
-        gotoxy(20, 8);
-        printf("2 - Consultar em Ordem de Codigo");
         gotoxy(20, 9);
-        printf("3 - Consultar em Ordem Alfabetica");
-        gotoxy(20, 10);
-        printf("4 - Consultar o Codigo Especifico");
+        printf("1 - Consultar Fichario do Produto Geral");
         gotoxy(20, 11);
+        printf("2 - Consultar em Ordem de Codigo");
+        gotoxy(20, 13);
+        printf("3 - Consultar em Ordem Alfabetica");
+        gotoxy(20, 15);
+        printf("4 - Consultar o Codigo Especifico");
+        gotoxy(20, 17);
         printf("5 - Retornar Menu Principal");
-        gotoxy(8, 23);
+        gotoxy(8, 29);
         printf("Digite sua opcao..:");
         scanf("%d", &opc);
         switch (opc)
         {
         case 1:
-            // incluir função
+            consultarTodos(L);
             break;
 
         case 2:
-            consultarOrdemCodigo(L);
+            // inclui função
             break;
         case 3:
-            consultarAlfabetica(L);
+            // incluir função
             break;
         case 4:
             // incluir função
@@ -942,7 +1123,7 @@ void menu_consultar(TipoLista *L)
         default:
             break;
         }
-    } while (opc < 6);
+    } while (opc < 5);
 }
 
 // MENUS
@@ -957,34 +1138,34 @@ void MenuProduto(TipoLista *L)
         gotoxy(30, 03);
         printf("MENU PRODUTO");
         gotoxy(20, 7);
-        printf("1 - Cadastar Produto no Final da Lista");
-        gotoxy(20, 8);
-        printf("2 - Cadastar Produto no Inicio da Lista");
+        printf("1 - Cadastar Produto no Inicio da Lista");
         gotoxy(20, 9);
-        printf("3 - Cadastar Produto em uma posicao da Lista");
-        gotoxy(20, 10);
-        printf("4 - Remover Produto no Final da Lista");
+        printf("2 - Cadastar Produto no Final da Lista");
         gotoxy(20, 11);
-        printf("5 - Remover Produto na posicao da Lista");
-        gotoxy(20, 12);
-        printf("6 - Remover Produto no Inicio da Lista");
+        printf("3 - Cadastar Produto em uma Posicao da Lista");
         gotoxy(20, 13);
-        printf("7 - Consultar todos os Produtos");
-        gotoxy(20, 14);
-        printf("8 - Alterar dados do Produto");
+        printf("4 - Remover Produto no Inicio da Lista");
         gotoxy(20, 15);
+        printf("5 - Remover Produto no Final da Lista");
+        gotoxy(20, 17);
+        printf("6 - Remover Produto na Posicao da Lista");
+        gotoxy(20, 19);
+        printf("7 - Consultar todos os Produtos");
+        gotoxy(20, 21);
+        printf("8 - Alterar dados do Produto");
+        gotoxy(20, 23);
         printf("9 - Retornar ao Menu Principal");
-        gotoxy(8, 23);
+        gotoxy(8, 29);
         printf("Digite sua opcao..:");
         scanf("%d", &opc);
         switch (opc)
         {
         case 1:
-            cadastrarFinal(L);
+            cadastrarInicio(L);
             break;
 
         case 2:
-            cadastrarInicio(L);
+            cadastrarFinal(L);
             break;
 
         case 3:
@@ -996,11 +1177,11 @@ void MenuProduto(TipoLista *L)
             break;
 
         case 5:
-            removerFinal(L);
+
             break;
 
         case 6:
-            removerPosicao(L);
+
             break;
 
         case 7:
@@ -1014,7 +1195,7 @@ void MenuProduto(TipoLista *L)
         default:
             break;
         }
-    } while (opc < 10);
+    } while (opc < 9);
 }
 
 // Menu Movimentacao Estoque
