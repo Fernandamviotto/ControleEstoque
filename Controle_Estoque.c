@@ -173,9 +173,9 @@ void telaconsulta()
 {
     tela();
     gotoxy(02, 05);
-    printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
+    printf("  ID     Desc. Produto                      UND      Data Valid.    QTD    Vl.Unit    Vl. Total");
     gotoxy(02, 06);
-    printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+    printf(" ----  ---------------------------------- ------- ---------------- ----- ----------- ------------");
 }
 
 // Funções MENU PRODUTO
@@ -821,9 +821,7 @@ void consultarTodos(TipoLista *L)
                 gotoxy(25, 23);
                 printf("CONSULTA DE PRODUTOS");
                 gotoxy(02, 05);
-                printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
-                gotoxy(02, 06);
-                printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+                telaconsulta();
             }
         }
         gotoxy(8, 29);
@@ -854,10 +852,7 @@ void consultarCodigo(TipoLista *L)
     gotoxy(30, 03);
     printf("CONSULTA DE PRODUTOS");
     lin = 7;
-    gotoxy(02, 05);
-    printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
-    gotoxy(02, 06);
-    printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+    TelaMov();
     p = L->Primeiro;
     if (p == NULL)
     {
@@ -905,10 +900,7 @@ void consultarCodigo(TipoLista *L)
                 lin = 7;
                 gotoxy(25, 23);
                 printf("CONSULTA DE PRODUTOS");
-                gotoxy(02, 05);
-                printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
-                gotoxy(02, 06);
-                printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+                telaconsulta();
             }
         }
         free(vetor);
@@ -937,10 +929,7 @@ void consultarOrdemNome(TipoLista *L)
     gotoxy(30, 03);
     printf("CONSULTA DE PRODUTOS");
     lin = 7;
-    gotoxy(02, 05);
-    printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
-    gotoxy(02, 06);
-    printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+    telaconsulta();
     p = L->Primeiro;
     if (p == NULL)
     {
@@ -988,10 +977,7 @@ void consultarOrdemNome(TipoLista *L)
                 lin = 7;
                 gotoxy(25, 23);
                 printf("CONSULTA DE PRODUTOS");
-                gotoxy(02, 05);
-                printf("ID  Desc. Produto               UND  Data Valid.    QTD    Vl.Unit     Vl. Total");
-                gotoxy(02, 06);
-                printf("--  --------------------------- ---- -------------- ----- ----------- ----------");
+                telaconsulta();
             }
         }
         free(vetor);
