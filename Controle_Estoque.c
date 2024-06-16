@@ -990,6 +990,131 @@ void consultarOrdemNome(TipoLista *L)
 // consultar o Codigo Especifico
 
 // Menu Movimentacao de Estoque
+char *ler_dt_mov()
+{
+
+    char *dt_mov;
+    dt_mov = malloc(sizeof(char) * 11);
+    do
+    {
+        gotoxy(40, 13);
+        printf("                         ");
+        gotoxy(40, 13);
+        fgets(dt_mov, 11, stdin);
+
+        if ((strlen(dt_mov) == 1) && (strcmp(dt_mov, "0") == 0))
+        {
+            gotoxy(8, 29);
+            printf("Data de Validade e Obrigatoria");
+            getch();
+            gotoxy(8, 29);
+            printf("                                                  ");
+        }
+    } while ((strlen(dt_mov) == 1) && (strcmp(dt_mov, "0") == -1));
+    return dt_mov;
+}
+
+char *ler_tp_mov()
+{
+
+    char *tp_mov;
+    tp_mov = malloc(sizeof(char) * 7);
+    do
+    {
+        gotoxy(40, 13);
+        printf("                         ");
+        gotoxy(40, 13);
+        fgets(tp_mov, 7, stdin);
+
+        if ((strlen(tp_mov) == 1) && (strcmp(tp_mov, "0") == 0))
+        {
+            gotoxy(8, 29);
+            printf("Data de Validade e Obrigatoria");
+            getch();
+            gotoxy(8, 29);
+            printf("                                                  ");
+        }
+    } while ((strlen(tp_mov) == 1) && (strcmp(tp_mov, "0") == -1));
+    return tp_mov;
+}
+
+float *ler_qt_mov()
+{
+
+    float *qt_mov;
+    qt_mov = malloc(sizeof(float));
+    do
+    {
+        gotoxy(40, 13);
+        printf("                         ");
+        gotoxy(40, 13);
+        scanf("%.2f", &qt_mov);
+
+        if ((strlen(qt_mov) == 1) && (strcmp(qt_mov, "0") == 0))
+        {
+            gotoxy(8, 29);
+            printf("Data de Validade e Obrigatoria");
+            getch();
+            gotoxy(8, 29);
+            printf("                                                  ");
+        }
+    } while ((strlen(qt_mov) == 1) && (strcmp(qt_mov, "0") == -1));
+    return qt_mov;
+}
+
+float *ler_vl_unit_mov()
+{
+
+    float *vl_unit_mov;
+    vl_unit_mov = malloc(sizeof(float));
+    do
+    {
+        gotoxy(40, 13);
+        printf("                         ");
+        gotoxy(40, 13);
+        scanf("%.2f", &vl_unit_mov);
+
+        if ((strlen(vl_unit_mov) == 1) && (strcmp(vl_unit_mov, "0") == 0))
+        {
+            gotoxy(8, 29);
+            printf("Data de Validade e Obrigatoria");
+            getch();
+            gotoxy(8, 29);
+            printf("                                                  ");
+        }
+    } while ((strlen(vl_unit_mov) == 1) && (strcmp(vl_unit_mov, "0") == -1));
+    return vl_unit_mov;
+}
+
+float *ler_vl_total_mov()
+{
+
+    float *vl_total_mov;
+    vl_total_mov = malloc(sizeof(float));
+    do
+    {
+        gotoxy(40, 13);
+        printf("                         ");
+        gotoxy(40, 13);
+        scanf("%.2f", &vl_total_mov);
+
+        if ((strlen(vl_total_mov) == 1) && (strcmp(vl_total_mov, "0") == 0))
+        {
+            gotoxy(8, 29);
+            printf("Data de Validade e Obrigatoria");
+            getch();
+            gotoxy(8, 29);
+            printf("                                                  ");
+        }
+    } while ((strlen(vl_total_mov) == 1) && (strcmp(vl_total_mov, "0") == -1));
+    return vl_total_mov;
+}
+
+void leitura_mov(reg_movimentacao *reg_mov)
+{
+    // o strcpy pega o valor dos le... e coloca nos reg_prod
+}
+
 // calculo de custo medio do valor unitario de cada produto
 
 // cadastrar movimentacao de estoque
@@ -1028,6 +1153,8 @@ void consultarOrdemNome(TipoLista *L)
             printf("               ");
         }
     } while (aux1 == NULL);
+    //Leitura dos dados da movimentacao
+
 
     reg_mov.cd_prod_mov = reg_prod.cd_produto;
 
@@ -1035,11 +1162,12 @@ void consultarOrdemNome(TipoLista *L)
 }*/
 
 // Lista Movimentacao de Estoque
-void ConsultaMov(TipoLista *L)
+void ConsultaMov(TipoLista *L, TipoLista_mov *M)
 {
     int resp;
     int aux1;
     reg_movimentacao reg_mov;
+    reg_produto reg_prod;
 
     do
     {
@@ -1054,7 +1182,7 @@ void ConsultaMov(TipoLista *L)
         printf("|  Data         Tip     Quant     Vl.Unit    Vl. Total     Qtd Est   Custo Med     Vl.Total");
         gotoxy(02, 8);
         printf("|----------  ------- ---------- ----------- ------------ ---------- -----------  ----------- |");
-        scanf("%d", &reg_mov.cd_prod_mov);
+        scanf("%d", &reg_prod.cd_produto);
         aux1 = 0;
     } while (aux1 != 0);
 
@@ -1185,7 +1313,7 @@ void MenuProduto(TipoLista *L)
 }
 
 // Menu Movimentacao Estoque
-void MovEstoque(TipoLista *L)
+void MovEstoque(TipoLista *L, TipoLista_mov *M)
 {
     int opc;
     do
@@ -1209,7 +1337,7 @@ void MovEstoque(TipoLista *L)
             break;
 
         case 2:
-            ConsultaMov(L);
+            ConsultaMov(L, M);
             break;
 
         default:
@@ -1226,15 +1354,15 @@ int main()
     // getch();
     int opc;
     TipoLista L;
-    // TipoLista_mov M;
+    TipoLista_mov M;
     //  para iniciar a cabeça deve estar fazia
 
     // LISTA DE PRODUTO
     L.Primeiro = NULL;
     L.Ultimo = NULL;
-    /*// LISTA DE MOVIMENTACAO
+    // LISTA DE MOVIMENTACAO
     M.Primeiro_mov = NULL;
-    M.Ultimo_mov = NULL;*/
+    M.Ultimo_mov = NULL;
 
     setlocale(LC_ALL, "portuguese-brazilian");
     // fica dentro de um Do While para o usuario escolher dentre as opções
@@ -1260,7 +1388,7 @@ int main()
             break;
 
         case 2:
-            MovEstoque(&L);
+            MovEstoque(&L, &M);
             break;
 
         default:
