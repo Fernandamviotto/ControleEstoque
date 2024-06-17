@@ -192,6 +192,7 @@ char *le_nm_produto()
         printf("                         ");
         gotoxy(40, 9);
         fgets(nm_produto, 50, stdin);
+        fflush(stdin);
 
         // O srtlen verifica o tamanho do campo, servido para validar o valor digitado
         if ((strlen(nm_produto) == 1) && (strcmp(nm_produto, "0") == -1))
@@ -217,7 +218,8 @@ char *le_und_produto()
         gotoxy(40, 11);
         printf("                         ");
         gotoxy(40, 11);
-        fgets(und_produto, 4, stdin);
+        fgets(und_produto, 3, stdin);
+        fflush(stdin);
 
         if ((strlen(und_produto) == 1) && (strcmp(und_produto, "0") == -1))
         {
@@ -239,12 +241,13 @@ char *le_dt_validade()
     dt_validade = malloc(sizeof(char) * 11);
     do
     {
+        fflush(stdin);
         gotoxy(40, 13);
-        printf("                         ");
+        printf("                                 ");
         gotoxy(40, 13);
         fgets(dt_validade, 11, stdin);
 
-        if ((strlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == 0))
+        if ((strlen(dt_validade) == 1) && (strcmp(dt_validade, "0") == -1))
         {
             gotoxy(8, 29);
             printf("Data de Validade e Obrigatoria");
@@ -1011,9 +1014,6 @@ void cadastrarMov(TipoLista *L, TipoLista_mov *M)
         scanf("%d", &reg_prod.cd_produto);
         gotoxy(40, 06);
         printf("-");
-        reg_prod = aux1->conteudo;
-        gotoxy(42, 06);
-        printf("%s", reg_prod.nm_produto);
         aux1 = pesquisa(L, reg_prod.cd_produto);
         if (aux1 == NULL)
         {
@@ -1026,21 +1026,28 @@ void cadastrarMov(TipoLista *L, TipoLista_mov *M)
             printf("               ");
         }
     } while (aux1 == NULL);
-    // Leitura dos dados da movimentacao
 
+    // Leitura dos dados da movimentacao
+    reg_prod = aux1->conteudo;
+    gotoxy(42, 06);
+    printf("%s", reg_prod.nm_produto);
+    fflush(stdin);
     gotoxy(37, 8);
     fgets(reg_mov.dt_mov, 11, stdin);
+    fflush(stdin);
     gotoxy(37, 10);
     fgets(reg_mov.tp_mov, 7, stdin);
+    fflush(stdin);
     gotoxy(37, 12);
     scanf("%f", &reg_mov.qt_mov);
+    fflush(stdin);
     gotoxy(37, 14);
     scanf("%f", &reg_mov.vl_unit_mov);
     // Calculo do Valor Total
     reg_mov.vl_total_mov = reg_mov.qt_mov * reg_mov.vl_unit_mov;
+    fflush(stdin);
     gotoxy(37, 16);
     printf("%.2f", reg_mov.vl_total_mov);
-
     // Calculo do Custo Medio
     reg_prod = aux1->conteudo;
     reg_prod.qtd_produto = reg_prod.qtd_produto + reg_mov.qt_mov;
