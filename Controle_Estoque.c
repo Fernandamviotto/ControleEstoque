@@ -47,6 +47,8 @@ typedef struct
     float vl_unit_mov;
     float vl_total_mov;
     float qtd_estoque;
+    float customed_mov;
+    float vl_final;
 } reg_movimentacao;
 
 typedef struct TipoItem_mov *TipoApontador_mov;
@@ -1154,10 +1156,10 @@ void cadastrarMov(TipoLista *L, TipoLista_mov *M)
     scanf("%s", reg_mov.tp_mov);
     fflush(stdin);
     gotoxy(37, 12);
-    scanf("%f", &reg_mov.qt_mov);
+    scanf("%.0f", &reg_mov.qt_mov);
     fflush(stdin);
     gotoxy(37, 14);
-    scanf("%f", &reg_mov.vl_unit_mov);
+    scanf("%.2f", &reg_mov.vl_unit_mov);
 
     // Calculo do Valor Total
     reg_mov.vl_total_mov = reg_mov.qt_mov * reg_mov.vl_unit_mov;
@@ -1171,13 +1173,17 @@ void cadastrarMov(TipoLista *L, TipoLista_mov *M)
         reg_prod.qtd_produto = reg_prod.qtd_produto + reg_mov.qt_mov;
         reg_prod.vl_total = reg_prod.vl_total + reg_mov.vl_total_mov;
         reg_prod.vl_CustoMedio = reg_prod.vl_total / reg_prod.qtd_produto;
+        reg_mov.vl_final = reg_prod.vl_total;
         aux1->conteudo = reg_prod;
+        reg_mov.qtd_estoque = reg_prod.qtd_produto;
     }
     else
     {
         reg_prod.qtd_produto = reg_prod.qtd_produto - reg_mov.qt_mov;
         reg_prod.vl_total = reg_prod.vl_total - reg_mov.vl_total_mov;
-        reg_prod.vl_CustoMedio = reg_prod.vl_total / reg_prod.qtd_produto;
+        // reg_prod.vl_CustoMedio = reg_prod.vl_total / reg_prod.qtd_produto;
+        reg_mov.customed_mov = reg_prod.vl_CustoMedio;
+        reg_mov.vl_final = reg_prod.vl_total;
         aux1->conteudo = reg_prod;
     }
 
@@ -1220,6 +1226,7 @@ void ConsultaMov(TipoLista *L, TipoLista_mov *M)
     reg_produto reg_prod;
     int resp;
     int aux;
+    int lin;
 
     do
     {
@@ -1227,6 +1234,7 @@ void ConsultaMov(TipoLista *L, TipoLista_mov *M)
         gotoxy(40, 03);
         printf("CONSULTAR MOVIMENTACAO");
         telaConsMov();
+        lin = 7;
         gotoxy(10, 05);
         scanf("%d", &reg_prod.cd_produto);
         aux = 0;
@@ -1252,28 +1260,29 @@ void ConsultaMov(TipoLista *L, TipoLista_mov *M)
         reg_mov = P->conteudo_mov;
         if (reg_mov.cd_prod_mov == reg_prod.cd_produto)
         {
-            gotoxy(02, 10);
+            lin = lin + 2;
+            gotoxy(02, lin);
             printf("%s", reg_mov.dt_mov);
-            gotoxy(12, 10);
+            gotoxy(12, lin);
             printf("%s", reg_mov.tp_mov);
-            gotoxy(21, 10);
+            gotoxy(21, lin);
             printf("%6.2f", reg_mov.qt_mov);
-            gotoxy(31, 10);
+            gotoxy(31, lin);
             printf("%6.2f", reg_mov.vl_unit_mov);
-            gotoxy(42, 10);
+            gotoxy(42, lin);
             printf("%6.2f", reg_mov.vl_total_mov);
-            gotoxy(54, 10);
+            gotoxy(54, lin);
             printf("%6.2f", reg_prod.qtd_produto);
-            gotoxy(64, 10);
-            printf("%6.2f", reg_prod.vl_CustoMedio);
-            gotoxy(74, 10);
-            printf("%6.2f", reg_prod.vl_total);
+            gotoxy(64, lin);
+            printf("%6.2f", reg_mov.customed_mov);
+            gotoxy(74, lin);
+            printf("%6.2f", reg_mov.vl_final);
         }
         P = P->proximo_mov;
     }
 
     gotoxy(8, 29);
-    printf("Deseja gravar os dados (1 - SIM; 2 - NÃO)..: ");
+    printf("Deseja gravar os dados (1 - SIM; 2 - NAO)..: ");
     scanf("%d", &resp);
 }
 
