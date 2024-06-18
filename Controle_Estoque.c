@@ -1287,53 +1287,6 @@ void ConsultaMov(TipoLista *L, TipoLista_mov *M)
     scanf("%d", &resp);
 }
 
-// Gravar em Arquivo
-void gravar(TipoLista *L)
-{
-    FILE *ptr;
-    char *filename = "Produtos.dat";
-    char *moda_gravacao = "wb";
-    reg_produto reg_prod;
-    TipoApontador p;
-
-    tela();
-    gotoxy(40, 03);
-    printf("GRAVAR PRODUTOS EM DISCO");
-    if (p == NULL)
-    {
-        gotoxy(8, 29);
-        printf("                                  ");
-        gotoxy(8, 29);
-        printf("Lista Vazia");
-        getch();
-    }
-    else
-    {
-        // abre o arquivo, se tiver erro o programa não abre
-        if ((ptr = fopen(filename, moda_gravacao)) == NULL)
-        {
-            gotoxy(8, 29);
-            printf("                                       ");
-            gotoxy(8, 29);
-            printf("Erro ao abrir o arquivo");
-            getch();
-        }
-        else
-        {
-            while (p != NULL)
-            {
-                reg_prod = p->conteudo;
-                fwrite(&reg_prod, sizeof(reg_produto), 1, ptr);
-                p = p->proximo;
-            }
-            fclose(ptr);
-            gotoxy(8, 29);
-            printf("Produtos gravados com sucesso");
-            getch();
-        }
-    }
-}
-
 // SUBMENU
 // Menu Consultar Produto
 void menu_consultar(TipoLista *L)
@@ -1485,6 +1438,104 @@ void MovEstoque(TipoLista *L, TipoLista_mov *M)
     } while (opc < 2);
 }
 
+// Função para leitura de arquivo
+void lerArquivo(TipoLista *L)
+{
+    FILE *ptr;
+    char *filename = "Produtos.dat";
+    char *moda_gravacao = "rb";
+    reg_produto reg_prod;
+    TipoApontador P;
+    L->Primeiro = NULL;
+    L->Ultimo = NULL;
+    tela();
+    gotoxy(40, 03);
+    printf("LER PRODUTOS EM DISCO");
+
+    // abre o arquivo, se tiver erro o programa não abre
+    ptr = fopen(filename, moda_gravacao);
+    if (ptr == NULL)
+    {
+        gotoxy(8, 29);
+        printf("Erro ao abrir o arquivo");
+        getch();
+    }
+    else
+    {
+        gotoxy(8, 29);
+        while (!feof(ptr))
+        {
+            if (fread(&reg_prod, sizeof(reg_produto), 1, ptr) != 0)
+            {
+
+                if (L->Primeiro == NULL)
+                {
+                    P = (TipoApontador)malloc(sizeof(TipoItem));
+                    P->conteudo = reg_prod;
+                    P->proximo = NULL;
+                    L->Primeiro = P;
+                    L->Ultimo = P;
+                }
+                else
+                {
+                    P->proximo = (TipoApontador)malloc(sizeof(TipoItem));
+                    P = P->proximo;
+                    P->conteudo = reg_prod;
+                    P->proximo = NULL;
+                    L->Ultimo = P;
+                }
+            }
+        }
+    }
+}
+
+// Gravar em Arquivo
+void gravar(TipoLista *L)
+{
+    FILE *ptr;
+    char *filename = "Produtos.dat";
+    char *moda_gravacao = "wb";
+    reg_produto reg_prod;
+    TipoApontador p;
+
+    tela();
+    gotoxy(40, 03);
+    printf("GRAVAR PRODUTOS EM DISCO");
+    if (p == NULL)
+    {
+        gotoxy(8, 29);
+        printf("                                  ");
+        gotoxy(8, 29);
+        printf("Lista Vazia");
+        getch();
+    }
+    else
+    {
+        // abre o arquivo, se tiver erro o programa não abre
+        if ((ptr = fopen(filename, moda_gravacao)) == NULL)
+        {
+            gotoxy(8, 29);
+            printf("                                       ");
+            gotoxy(8, 29);
+            printf("Erro ao abrir o arquivo");
+            getch();
+        }
+        else
+        {
+            while (p != NULL)
+            {
+                reg_prod = p->conteudo;
+                fwrite(&reg_prod, sizeof(reg_produto), 1, ptr);
+                p = p->proximo;
+            }
+            fclose(ptr);
+            gotoxy(8, 29);
+            printf("Produtos gravados com sucesso");
+            getch();
+        }
+    }
+}
+
 // MENU PRINCIPAL
 int main()
 {
@@ -1504,6 +1555,8 @@ int main()
     M.Ultimo_mov = NULL;
 
     setlocale(LC_ALL, "portuguese-brazilian");
+    // le_arquivo(&L);
+
     // fica dentro de um Do While para o usuario escolher dentre as opções
     do
     {
