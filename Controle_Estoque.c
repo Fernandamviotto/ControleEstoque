@@ -1287,6 +1287,53 @@ void ConsultaMov(TipoLista *L, TipoLista_mov *M)
     scanf("%d", &resp);
 }
 
+// Gravar em Arquivo
+void gravar(TipoLista *L)
+{
+    FILE *ptr;
+    char *filename = "Produtos.dat";
+    char *moda_gravacao = "wb";
+    reg_produto reg_prod;
+    TipoApontador p;
+
+    tela();
+    gotoxy(40, 03);
+    printf("GRAVAR PRODUTOS EM DISCO");
+    if (p == NULL)
+    {
+        gotoxy(8, 29);
+        printf("                                  ");
+        gotoxy(8, 29);
+        printf("Lista Vazia");
+        getch();
+    }
+    else
+    {
+        // abre o arquivo, se tiver erro o programa não abre
+        if ((ptr = fopen(filename, moda_gravacao)) == NULL)
+        {
+            gotoxy(8, 29);
+            printf("                                       ");
+            gotoxy(8, 29);
+            printf("Erro ao abrir o arquivo");
+            getch();
+        }
+        else
+        {
+            while (p != NULL)
+            {
+                reg_prod = p->conteudo;
+                fwrite(&reg_prod, sizeof(reg_produto), 1, ptr);
+                p = p->proximo;
+            }
+            fclose(ptr);
+            gotoxy(8, 29);
+            printf("Produtos gravados com sucesso");
+            getch();
+        }
+    }
+}
+
 // SUBMENU
 // Menu Consultar Produto
 void menu_consultar(TipoLista *L)
