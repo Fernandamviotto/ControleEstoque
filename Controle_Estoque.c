@@ -1156,10 +1156,10 @@ void cadastrarMov(TipoLista *L, TipoLista_mov *M)
     scanf("%s", reg_mov.tp_mov);
     fflush(stdin);
     gotoxy(37, 12);
-    scanf("%.0f", &reg_mov.qt_mov);
+    scanf("%f", &reg_mov.qt_mov);
     fflush(stdin);
     gotoxy(37, 14);
-    scanf("%.2f", &reg_mov.vl_unit_mov);
+    scanf("%f", &reg_mov.vl_unit_mov);
 
     // Calculo do Valor Total
     reg_mov.vl_total_mov = reg_mov.qt_mov * reg_mov.vl_unit_mov;
@@ -1173,17 +1173,18 @@ void cadastrarMov(TipoLista *L, TipoLista_mov *M)
         reg_prod.qtd_produto = reg_prod.qtd_produto + reg_mov.qt_mov;
         reg_prod.vl_total = reg_prod.vl_total + reg_mov.vl_total_mov;
         reg_prod.vl_CustoMedio = reg_prod.vl_total / reg_prod.qtd_produto;
-        reg_mov.vl_final = reg_prod.vl_total;
-        aux1->conteudo = reg_prod;
+        reg_mov.customed_mov = reg_prod.vl_CustoMedio;
+        reg_mov.vl_final = reg_prod.vl_CustoMedio * reg_prod.qtd_produto;
         reg_mov.qtd_estoque = reg_prod.qtd_produto;
+        aux1->conteudo = reg_prod;
     }
     else
     {
         reg_prod.qtd_produto = reg_prod.qtd_produto - reg_mov.qt_mov;
         reg_prod.vl_total = reg_prod.vl_total - reg_mov.vl_total_mov;
-        // reg_prod.vl_CustoMedio = reg_prod.vl_total / reg_prod.qtd_produto;
         reg_mov.customed_mov = reg_prod.vl_CustoMedio;
-        reg_mov.vl_final = reg_prod.vl_total;
+        reg_mov.vl_final = reg_prod.vl_CustoMedio * reg_prod.qtd_produto;
+        reg_mov.qtd_estoque = reg_prod.qtd_produto;
         aux1->conteudo = reg_prod;
     }
 
@@ -1272,7 +1273,7 @@ void ConsultaMov(TipoLista *L, TipoLista_mov *M)
             gotoxy(42, lin);
             printf("%6.2f", reg_mov.vl_total_mov);
             gotoxy(54, lin);
-            printf("%6.2f", reg_prod.qtd_produto);
+            printf("%6.2f", reg_mov.qtd_estoque);
             gotoxy(64, lin);
             printf("%6.2f", reg_mov.customed_mov);
             gotoxy(74, lin);
@@ -1382,11 +1383,11 @@ void MenuProduto(TipoLista *L)
             break;
 
         case 5:
-
+            removerFinal(L);
             break;
 
         case 6:
-
+            removerPosicao(L);
             break;
 
         case 7:
