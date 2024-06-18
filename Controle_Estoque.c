@@ -1588,7 +1588,7 @@ int main()
         }
         // somente o principal chama as funções usando o "&", pois a variavel que esrá lá é comum e não um ponteiro.
 
-    } while (opc < 4);
+    } while (opc < 2);
     // gravar(&L);
     return 0;
 }
