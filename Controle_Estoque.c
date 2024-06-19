@@ -57,7 +57,7 @@ typedef struct TipoItem_mov
 {
     TipoApontador_mov anterior_mov;
     reg_movimentacao conteudo_mov;
-    TipoApontador proximo_mov;
+    TipoApontador_mov proximo_mov;
 } TipoItem_mov;
 
 typedef struct
@@ -387,42 +387,46 @@ void cadastrarInicio(TipoLista *L)
         getchar();
         // chama a função para validar se este código já existe
         aux1 = pesquisa(L, reg_prod.cd_produto);
-        if (aux1 != NULL)
+        if ((aux1 != NULL) && (reg_prod.cd_produto != 0))
         {
             gotoxy(8, 29);
             printf("                    ");
             gotoxy(8, 29);
-            printf("Codigo ja Cadsatrado");
+            printf("Codigo ja Cadastrado");
             getch();
             gotoxy(8, 29);
             printf("                    ");
         }
-    } while (aux1 != NULL);
-    // Le os dados do produto
-    leitura(&reg_prod); // Incluir a tela de leitura
+    } while ((aux1 != NULL) && (reg_prod.cd_produto != 0));
 
-    reg_prod.qtd_produto = 0;
-    reg_prod.vl_CustoMedio = 0;
-    reg_prod.vl_total = 0;
-
-    gotoxy(8, 29);
-    printf("Deseja gravar os dados (1-SIM; 2-NAO)..:");
-    scanf("%d", &resp);
-    if (resp == 1)
+    if (reg_prod.cd_produto != 0)
     {
-        P = (TipoApontador)malloc(sizeof(TipoItem));
-        // move os valores lidos para os ponteiros
-        P->conteudo = reg_prod;
-        if (L->Primeiro == NULL)
+        // Le os dados do produto
+        leitura(&reg_prod); // Incluir a tela de leitura
+
+        reg_prod.qtd_produto = 0;
+        reg_prod.vl_CustoMedio = 0;
+        reg_prod.vl_total = 0;
+
+        gotoxy(8, 29);
+        printf("Deseja gravar os dados (1-SIM; 2-NAO)..:");
+        scanf("%d", &resp);
+        if (resp == 1)
         {
-            L->Primeiro = P;
-            L->Primeiro->proximo = NULL;
-            L->Ultimo = L->Primeiro;
-        }
-        else
-        {
-            P->proximo = L->Primeiro;
-            L->Primeiro = P;
+            P = (TipoApontador)malloc(sizeof(TipoItem));
+            // move os valores lidos para os ponteiros
+            P->conteudo = reg_prod;
+            if (L->Primeiro == NULL)
+            {
+                L->Primeiro = P;
+                L->Primeiro->proximo = NULL;
+                L->Ultimo = L->Primeiro;
+            }
+            else
+            {
+                P->proximo = L->Primeiro;
+                L->Primeiro = P;
+            }
         }
     }
 }
@@ -571,6 +575,7 @@ void cadastrarPosicao(TipoLista *L)
 void removerInicio(TipoLista *L)
 {
     TipoApontador P;
+    TipoApontador aux;
     reg_produto reg_prod;
     int resp;
 
@@ -620,11 +625,13 @@ void removerInicio(TipoLista *L)
 
     if (resp == 1)
     {
-        free(P);
+        aux = L->Primeiro->proximo;
+        L->Primeiro->proximo = aux->proximo;
+        free(aux);
     }
     else
     {
-        L->Primeiro = P;
+        L->Ultimo = L->Primeiro;
     }
 }
 
@@ -732,76 +739,69 @@ void removerPosicao(TipoLista *L)
     }
     else
     {
-        P = L->Primeiro;
-        if (L->Primeiro == L->Ultimo)
+
+        gotoxy(8, 29);
+        printf("                                                 ");
+        gotoxy(8, 29);
+        printf("Informe a posicao..:");
+        scanf("%d", &posicao);
+
+        // validar se a posicao existe
+
+        aux1 = L->Primeiro;
+        for (int i = 1; i < posicao - 1; i++)
         {
-            L->Primeiro = NULL;
-            L->Ultimo = NULL;
+            aux1 = aux1->proximo;
         }
-        else
-        {
-            gotoxy(8, 29);
-            printf("                                                 ");
-            gotoxy(8, 29);
-            printf("Informe a posicao..:");
-            scanf("%d", &posicao);
-            if (posicao == 1)
-            {
-                L->Primeiro = L->Primeiro->proximo;
-                free(P);
-            }
-            else
-            {
-                aux1 = L->Primeiro;
-                for (int i = 1; i < posicao - 1; i++)
-                {
-                    aux1 = aux1->proximo;
-                }
-                P = aux1->proximo;
-                aux1->proximo = P->proximo;
-                // mostrar o produto que deseja remover
-                reg_prod = P->conteudo;
-                gotoxy(40, 8);
-                printf("%d", reg_prod.cd_produto);
-                gotoxy(40, 12);
-                printf("%s", reg_prod.nm_produto);
-                gotoxy(40, 14);
-                printf("%s", reg_prod.und_produto);
-                gotoxy(40, 16);
-                printf("%s", reg_prod.dt_validade);
-                gotoxy(25, 24);
-                printf("%.2f", reg_prod.qtd_produto);
-                gotoxy(47, 24);
-                printf("%.2f", reg_prod.vl_CustoMedio);
-                gotoxy(70, 24);
-                printf("%.2f", reg_prod.vl_total);
-                free(P);
-            }
-        }
+        P = aux1->proximo;
+        aux1->proximo = P->proximo;
+        // mostrar o produto que deseja remover
+        reg_prod = P->conteudo;
+        gotoxy(40, 8);
+        printf("%d", reg_prod.cd_produto);
+        gotoxy(40, 12);
+        printf("%s", reg_prod.nm_produto);
+        gotoxy(40, 14);
+        printf("%s", reg_prod.und_produto);
+        gotoxy(40, 16);
+        printf("%s", reg_prod.dt_validade);
+        gotoxy(25, 24);
+        printf("%.2f", reg_prod.qtd_produto);
+        gotoxy(47, 24);
+        printf("%.2f", reg_prod.vl_CustoMedio);
+        gotoxy(70, 24);
+        printf("%.2f", reg_prod.vl_total);
     }
 
     // perguntar se deseja remover
     gotoxy(8, 29);
     printf("                                                 ");
     gotoxy(8, 29);
-    printf("Confirma a exclusao do Produto (1-SIM; 2-NAO)..:");
+    printf("Confirma a exclusao do Produto (1-SIM; 2-NaaaaAO)..:");
     scanf("%d", &resp);
-
+    getchar();
     if (resp == 1)
-    {
-        free(P);
-    }
-    else
     {
         if (posicao == 1)
         {
-            L->Primeiro = P;
+            P = L->Primeiro;
+            L->Primeiro = P->proximo;
+            free(P);
         }
         else
         {
-            aux1->proximo = P;
+            aux1->proximo = P->proximo;
+            free(P);
         }
+        gotoxy(8, 29);
+        printf("Produto cadastrado com sucesso");
     }
+    else
+    {
+        gotoxy(8, 29);
+        printf("nao fiz nada");
+    }
+    getch();
 }
 
 // funções menu consultar
@@ -874,7 +874,7 @@ void ordenarCodigo(TipoLista *L)
     p = L->Primeiro;
     if (p == NULL)
     {
-        gotoxy(07, 23);
+        gotoxy(8, 29);
         printf("LISTA DE PRODUTOS VAZIA");
         getch();
     }
@@ -952,7 +952,7 @@ void consultarOrdemNome(TipoLista *L)
     p = L->Primeiro;
     if (p == NULL)
     {
-        gotoxy(07, 23);
+        gotoxy(8, 29);
         printf("LISTA DE PRODUTOS VAZIA");
         getch();
     }
@@ -1154,6 +1154,9 @@ void alterarProduto(TipoLista *L)
 }
 
 // Menu Movimentacao de Estoque
+
+// validar se tem produto no estoque para movimentar, caso não tenha não pode movimentar
+
 // cadastrar movimentacao de estoque
 void cadastrarMov(TipoLista *L, TipoLista_mov *M)
 {
@@ -1251,14 +1254,16 @@ void cadastrarMov(TipoLista *L, TipoLista_mov *M)
         P->conteudo_mov = reg_mov;
         if (M->Primeiro_mov == NULL)
         {
+            P->proximo_mov = NULL;
+            P->anterior_mov = NULL;
             M->Primeiro_mov = P;
-            M->Primeiro_mov->proximo_mov = NULL;
             M->Ultimo_mov = M->Primeiro_mov;
         }
         else
         {
-            P->proximo_mov = M->Primeiro_mov;
-            M->Primeiro_mov = P;
+            P->proximo_mov = NULL;
+            P->anterior_mov = M->Ultimo_mov;
+            M->Ultimo_mov = P;
         }
     }
 }
@@ -1328,7 +1333,7 @@ void ConsultaMov(TipoLista *L, TipoLista_mov *M)
     }
 
     gotoxy(8, 29);
-    printf("Deseja gravar os dados (1 - SIM; 2 - NAO)..: ");
+    printf("Pressione uma tecla para continuar...");
     scanf("%d", &resp);
 }
 
@@ -1480,7 +1485,7 @@ void MovEstoque(TipoLista *L, TipoLista_mov *M)
         default:
             break;
         }
-    } while (opc < 2);
+    } while (opc < 3);
 }
 
 // Função para leitura de arquivo
@@ -1535,7 +1540,9 @@ void lerArquivo(TipoLista *L)
     fclose(ptr);
 }
 
-// Gravar em Arquivo
+// ler aquivo de movimentacao
+
+// Gravar cadastro produtos
 void gravar(TipoLista *L)
 {
     FILE *ptr;
@@ -1582,6 +1589,8 @@ void gravar(TipoLista *L)
         }
     }
 }
+
+// gravar movimentacao
 
 // MENU PRINCIPAL
 int main()
